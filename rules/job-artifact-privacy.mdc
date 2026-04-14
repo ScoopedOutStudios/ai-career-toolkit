@@ -1,0 +1,12 @@
+---
+description: Privacy and sanitization guardrails for job-search artifacts
+alwaysApply: true
+---
+
+# Job Artifact Privacy
+
+- Do not commit sensitive personal details unless explicitly approved.
+- Keep recruiter names, compensation specifics, and personal identifiers sanitized in versioned docs.
+- Prefer placeholders or generalized references for private data.
+- If uncertain whether data is sensitive, ask before writing it.
+- When creating examples, default to sanitized, reusable variants.

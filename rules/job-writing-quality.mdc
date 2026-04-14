@@ -1,0 +1,13 @@
+---
+description: Quality bar for career, interview, and content-writing artifacts
+globs: "{templates/**/*.md,workflow-docs/**/*.md,config/**/*.md}"
+alwaysApply: false
+---
+
+# Job Writing Quality
+
+- Write with clear structure: recommendation/draft first, rationale second.
+- Prefer concrete evidence, outcomes, and specific language over generic claims.
+- Keep outputs concise and scannable; avoid filler and repeated phrases.
+- When editing, preserve intent while improving clarity and tone.
+- If `in-my-voice` applies, remove cookie-cutter phrasing and keep voice personal.

@@ -1,0 +1,42 @@
+# ai-career-toolkit configuration
+# Copy this file to config/settings.yaml and customize for your search.
+
+# Target platforms for skill installation
+# Supported: cursor, claude-code
+platforms:
+  - cursor
+
+# Target company list generation parameters
+targeting:
+  domains:
+    - AI/ML
+    - developer tools
+    # - fintech
+    # - climate tech
+    # - healthcare
+    # - enterprise SaaS
+  company_stages:
+    - growth-stage
+    - late-stage
+    - public-scale
+  geo_remote:
+    - remote-first
+    # - NYC
+    # - SF Bay Area
+  role_level: Staff
+  exclusions:
+    # - crypto
+    # - defense
+    # - pre-seed
+
+# Active skills (all enabled by default)
+skills:
+  - content-review
+  - hm-review
+  - in-my-voice
+  - mock-interview-loop
+  - opportunity-evaluator
+  - social-content
+  - star-story
+  - target-list-generator
+  - tech-content-review
