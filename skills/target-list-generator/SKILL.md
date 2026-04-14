@@ -51,7 +51,7 @@ If criteria are not already in `config/settings.yaml`, ask the user interactivel
 
 ### Step 2: Research by Domain
 
-For each domain of interest, use a research-capable agent to find relevant companies:
+For each domain of interest, route to `research-guru` to find relevant companies:
 - Top companies in the domain (market leaders and fast risers)
 - Companies with strong engineering culture or brand
 - Companies with known active hiring in the target role level

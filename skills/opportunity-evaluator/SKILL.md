@@ -42,7 +42,7 @@ Produce a filter score (pass/fail with notes). If the role thesis is not availab
 
 ### Step 3: Company-as-Employer Research
 
-Research the company from an employee/candidate perspective. Use a research-capable agent or web search to gather:
+Research the company from an employee/candidate perspective. Route to `research-guru` to gather:
 - Engineering culture signals (RFC culture, IC career ladder, open-source presence, tech blog quality)
 - Growth trajectory (funding, revenue growth, recent hires vs layoffs)
 - Leadership stability (CTO/VP Eng tenure, recent departures)
@@ -92,6 +92,6 @@ Produce one of:
 
 ## Agent Routing
 
-- Route company research to a research-capable agent (e.g., web search, guru)
+- Route company research to `research-guru`
 - Route role-fit analysis through `career-guide` if available
 - Route materials readiness check through `hm-review` if the user wants to assess their application strength

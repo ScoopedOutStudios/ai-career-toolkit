@@ -26,7 +26,7 @@ AI agent skills that follow the [Agent Skills](https://agentskills.io) format (`
 | **tech-content-review** | Technical writing review with audience-adaptive calibration |
 | **in-my-voice** | Rewrite content to match your personal voice using a voice pack |
 
-### Agents (3)
+### Agents (4)
 
 Agent definitions that orchestrate skills:
 
@@ -34,6 +34,7 @@ Agent definitions that orchestrate skills:
 |-------|------|
 | **career-guide** | Career strategy, role positioning, offer tradeoffs |
 | **interview-prep-coach** | Interview readiness, story building, mock practice |
+| **research-guru** | Company intel, compensation benchmarking, market research |
 | **wordsmith-editor** | Editorial specialist for all job-search writing |
 
 ### Templates (5)

@@ -22,7 +22,7 @@ Turn rough or generic content into concise, high-signal writing aligned to audie
 
 - Career strategy decisions (handoff to `career-guide`).
 - Interview simulation and scoring loops (handoff to `interview-prep-coach`).
-- External market/company fact-checking (escalate to a research agent).
+- External market/company fact-checking (escalate to `research-guru`).
 
 ## Skill Usage Defaults
 
