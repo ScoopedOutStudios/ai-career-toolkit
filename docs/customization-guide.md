@@ -65,3 +65,4 @@ Refer to `workflow-docs/operating-workflow.md` for the full methodology:
 - **Weekly**: Review pipeline health, close stale opportunities, retier companies
 - **Per-opportunity**: Run `opportunity-evaluator` before investing significant time
 - **Per-interview**: Run mock loops, select stories, prepare questions
+

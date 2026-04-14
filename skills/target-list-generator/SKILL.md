@@ -15,7 +15,8 @@ Generate a comprehensive, scored list of target companies tailored to the user's
    - Domains of interest (e.g., AI/ML, developer tools, fintech, climate tech, healthcare, enterprise SaaS)
    - Company stage preferences (e.g., growth-stage, late-stage, public-scale, early-stage)
    - Geo/remote requirements (e.g., remote-first, NYC, SF Bay Area, hybrid OK)
-   - Role level target (e.g., Senior, Staff, Principal)
+   - Target role (e.g., Software Engineer, Engineering Manager, ML Engineer, SRE)
+   - Target level (e.g., Senior, Staff, Sr Staff, Principal)
    - Exclusion criteria (e.g., no crypto, no defense, no pre-seed)
    - Optional: specific companies to include or research
 

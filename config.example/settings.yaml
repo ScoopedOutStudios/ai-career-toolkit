@@ -9,25 +9,48 @@ platforms:
 # Target company list generation parameters
 targeting:
   domains:
-    - AI/ML
-    - developer tools
-    # - fintech
+    # - AI/ML
+    # - developer tools
     # - climate tech
     # - healthcare
     # - enterprise SaaS
+    # - fintech
+    # - cybersecurity
+    # - edtech
+    # - infrastructure
   company_stages:
-    - growth-stage
-    - late-stage
-    - public-scale
+    # - early-stage
+    # - growth-stage
+    # - late-stage
+    # - public-scale
+    # - nonprofit
+
+  # Role: the function/track you're targeting
+  # Examples: Software Engineer, Engineering Manager, Product Manager,
+  #           Site Reliability Engineer, Data Engineer, ML Engineer,
+  #           Engineering Director, Technical Program Manager
+  role: Software Engineer
+
+  # Level: seniority within the role track
+  # Examples: Mid-level, Senior, Staff, Sr Staff, Principal, Distinguished,
+  #           Manager, Sr Manager, Director, VP
+  level: Staff
+
   geo_remote:
-    - remote-first
+    # - remote-first
+    # - hybrid
+    # - onsite
     # - NYC
     # - SF Bay Area
-  role_level: Staff
+    # - Seattle
+    # - Austin
+    # - London
+    # - anywhere-US
   exclusions:
     # - crypto
     # - defense
     # - pre-seed
+    # - gambling
 
 # Active skills (all enabled by default)
 skills:

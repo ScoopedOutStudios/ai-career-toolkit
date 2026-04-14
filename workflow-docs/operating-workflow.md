@@ -26,12 +26,14 @@ Applied → Recruiter Screen → HM Screen → Panel → Offer
 
 ### Pipeline Health Checks (Weekly)
 
-| Metric | Target | How to Check |
-|--------|--------|--------------|
-| Active opportunities | 8-15 | Count open items at any pipeline stage |
-| Recruiter screens scheduled | 2+ per week | Count items at Recruiter Screen stage |
-| HM+ conversion | 30%+ of screens | Track stage transitions |
-| Stale opportunities (>14 days, no action) | 0 | Flag items with no recent update |
+
+| Metric                                    | Target          | How to Check                           |
+| ----------------------------------------- | --------------- | -------------------------------------- |
+| Active opportunities                      | 8-15            | Count open items at any pipeline stage |
+| Recruiter screens scheduled               | 2+ per week     | Count items at Recruiter Screen stage  |
+| HM+ conversion                            | 30%+ of screens | Track stage transitions                |
+| Stale opportunities (>14 days, no action) | 0               | Flag items with no recent update       |
+
 
 ## Daily Operating Cadence
 
@@ -45,21 +47,25 @@ Run every morning (20-30 minutes planning, then focused execution):
 
 ### Prioritization Signals
 
-| Signal | Weight |
-|--------|--------|
-| Overdue (due date passed) | Highest |
-| Due today | High |
-| Due tomorrow | Medium |
-| High priority label | Medium |
+
+| Signal                    | Weight                       |
+| ------------------------- | ---------------------------- |
+| Overdue (due date passed) | Highest                      |
+| Due today                 | High                         |
+| Due tomorrow              | Medium                       |
+| High priority label       | Medium                       |
 | Currently blocked/waiting | Deprioritize until unblocked |
+
 
 ### WIP Limits
 
-| Category | Limit | Rationale |
-|----------|-------|-----------|
-| Today | 3 | Focus; finish before starting new work |
-| This Week | 8 | Visible queue without overwhelm |
-| Waiting | Unlimited | Each must note the dependency and owner |
+
+| Category  | Limit     | Rationale                               |
+| --------- | --------- | --------------------------------------- |
+| Today     | 3         | Focus; finish before starting new work  |
+| This Week | 8         | Visible queue without overwhelm         |
+| Waiting   | Unlimited | Each must note the dependency and owner |
+
 
 ## Weekly Review (Friday)
 
@@ -74,11 +80,13 @@ Run every morning (20-30 minutes planning, then focused execution):
 
 ### Tier Definitions
 
-| Tier | Criteria | Outreach Priority |
-|------|----------|-------------------|
+
+| Tier   | Criteria                                                 | Outreach Priority                |
+| ------ | -------------------------------------------------------- | -------------------------------- |
 | **T1** | Strong role fit + known referral path + active headcount | Immediate; personalized outreach |
-| **T2** | Good role fit + public posting or warm lead | This week; tailored application |
-| **T3** | Interesting but speculative fit or no clear entry point | Backlog; opportunistic |
+| **T2** | Good role fit + public posting or warm lead              | This week; tailored application  |
+| **T3** | Interesting but speculative fit or no clear entry point  | Backlog; opportunistic           |
+
 
 ### Targeting Workflow
 
@@ -104,6 +112,7 @@ Market Calibration → Gap Analysis → Story Bank → Interview-Ready
 ### Per-Interview Prep
 
 For each scheduled interview:
+
 1. Research the company using `opportunity-evaluator` skill.
 2. Select 3-5 stories most relevant to the role and interview type.
 3. Run a mock loop targeting the expected question themes.
@@ -111,13 +120,15 @@ For each scheduled interview:
 
 ## Privacy Rules
 
-| What | Where to Store | Never Store In |
-|------|---------------|----------------|
-| Recruiter names | Local private files only | Versioned/shared docs |
-| Compensation details | Local private files only | Versioned/shared docs |
-| Personal identifiers | Local private files only | Versioned/shared docs |
-| Sanitized status + next action | Tracking tool of choice | — |
-| Reusable templates | This toolkit repo | — |
+
+| What                           | Where to Store           | Never Store In        |
+| ------------------------------ | ------------------------ | --------------------- |
+| Recruiter names                | Local private files only | Versioned/shared docs |
+| Compensation details           | Local private files only | Versioned/shared docs |
+| Personal identifiers           | Local private files only | Versioned/shared docs |
+| Sanitized status + next action | Tracking tool of choice  | —                     |
+| Reusable templates             | This toolkit repo        | —                     |
+
 
 ## Local File Structure
 
@@ -137,3 +148,4 @@ If using local files for tracking (recommended default):
     ├── 2026-W15.md
     └── 2026-W16.md
 ```
+
