@@ -1,10 +1,14 @@
 # ai-career-toolkit configuration
 # Copy this file to config/settings.yaml and customize for your search.
+#
+# NOTE: This file is read by AI agents as context for your preferences.
+# It is NOT consumed by setup.sh or install.sh — those scripts work
+# independently. Think of this as your "profile" that skills like
+# target-list-generator and opportunity-evaluator reference.
 
-# Target platforms for skill installation
+# Which AI platform you're using (for agent reference, not used by scripts)
 # Supported: cursor, claude-code
-platforms:
-  - cursor
+platform: cursor
 
 # Target company list generation parameters
 targeting:

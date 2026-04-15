@@ -1,21 +1,35 @@
 # ai-career-toolkit
 
-AI-powered career toolkit: skills, frameworks, and templates for structured job search — works with any agentic AI system.
+Stop winging your job search. Run it like an engineering system.
 
-## What This Is
+## The Problem
 
-A collection of composable AI agent skills, templates, and workflow documentation for running a disciplined, structured job search. Designed to work with **any AI agentic system** that supports skills and sub-agents (Cursor, Claude Code, and others).
+Most job searches are chaos: scattered notes in Google Docs, inconsistent interview prep, copy-pasting the same ChatGPT prompts, losing track of which companies you've contacted, and writing cover letters that sound like everyone else's. You know how to build disciplined systems at work — but your career search doesn't get the same rigor.
 
-Currently focused on **software engineering and tech roles**. Non-tech role support is planned as a future milestone.
+## What This Does
 
-## What's Included
+ai-career-toolkit is a set of AI agent skills, templates, and workflow frameworks that turn your job search into a structured, repeatable process. Install the skills into your AI coding agent (Cursor, Claude Code, or any system that supports [Agent Skills](https://agentskills.io)), and you get:
+
+| Without the toolkit | With the toolkit |
+|---|---|
+| Manually researching each company in browser tabs | `opportunity-evaluator` scores a company + role and gives you a pursue/park/skip recommendation |
+| Spreadsheet of company names with no prioritization | `target-list-generator` builds a scored, tiered target list from your criteria |
+| Generic resume sent everywhere | `hm-review` reviews your materials through recruiter and hiring manager lenses |
+| Inconsistent interview answers | `mock-interview-loop` runs scored practice rounds with specific feedback |
+| Rough notes that aren't interview-ready | `star-story` converts experience into tight STAR narratives |
+| Outreach messages that sound like templates | `social-content` + `in-my-voice` produce authentic, personal outreach |
+| No idea what "Staff Engineer" means at company X | `research-guru` digs up eng culture, comp data, hiring signals, and sentiment |
+
+All of this runs locally on your machine. No data leaves your control. No accounts to create.
+
+## What's Inside
 
 ### Skills (9)
 
-AI agent skills that follow the [Agent Skills](https://agentskills.io) format (`SKILL.md` with YAML frontmatter):
+AI agent skills that follow the [Agent Skills](https://agentskills.io) format:
 
-| Skill | Purpose |
-|-------|---------|
+| Skill | What it does |
+|-------|-------------|
 | **opportunity-evaluator** | Evaluate a company + role with structured scoring and pursue/park/skip recommendation |
 | **target-list-generator** | Build a scored, tiered list of target companies from your criteria |
 | **hm-review** | Dual-lens resume/application review (recruiter + hiring manager perspective) |
@@ -28,7 +42,7 @@ AI agent skills that follow the [Agent Skills](https://agentskills.io) format (`
 
 ### Agents (4)
 
-Agent definitions that orchestrate skills:
+Agent definitions that orchestrate skills and handle handoffs:
 
 | Agent | Role |
 |-------|------|
@@ -39,23 +53,24 @@ Agent definitions that orchestrate skills:
 
 ### Templates (5)
 
-Reusable frameworks for career planning:
+Reusable frameworks you fill in once and reference throughout your search:
 
-- **Role Thesis** — Define your target role, value prop, and search criteria
-- **Role Expectation Rubric** — Multi-level IC track scoring (Mid through Principal)
+- **Role Thesis** — Define your target role, value prop, must-haves, and dealbreakers
+- **Role Expectation Rubric** — Multi-level IC track scoring (Mid through Principal) based on public frameworks
 - **Interview Story System** — STAR story bank framework with interview loop mapping
-- **AI Leverage Case Sheet** — Templates for discussing AI usage in interviews
+- **AI Leverage Case Sheet** — Templates for discussing AI usage in interviews credibly
 - **Cover Letter** — Clean, professional template with placeholders
 
 ### Workflow Documentation
 
-Tool-agnostic methodology for running a job search:
-- Pipeline stages and health metrics
-- Daily operating cadence with WIP limits
-- Weekly review process
-- Tier-based company targeting
+A tool-agnostic methodology for running a disciplined job search (works with any tracking tool or just local files):
 
-## Quick Start
+- Opportunity pipeline stages with conversion benchmarks
+- Daily operating cadence with WIP limits (Today: max 3, This Week: max 8)
+- Weekly review process with health metrics
+- Tier-based company targeting (T1/T2/T3 with outreach priorities)
+
+## Quick Start (~10 minutes)
 
 ### 1. Clone
 
@@ -70,15 +85,15 @@ cd ai-career-toolkit
 ./setup.sh
 ```
 
-This creates:
-- `./config/` — your local toolkit settings (gitignored)
-- `~/.ai-career-toolkit/` — your personal career data (outside the repo)
+This creates two directories:
+- `./config/` — your local toolkit settings (gitignored, stays in repo)
+- `~/.ai-career-toolkit/` — your personal career data (outside the repo entirely)
 
 ### 3. Customize
 
-- Edit `config/settings.yaml` with your preferences
-- Fill out `~/.ai-career-toolkit/role-thesis.md` with your target role
-- Optionally build your voice pack in `config/voice-pack/`
+- Edit `config/settings.yaml` with your target role, level, domains, and preferences
+- Fill out `~/.ai-career-toolkit/role-thesis.md` with your target role details
+- Optionally customize `config/voice-pack/` with your writing style (see [customization guide](docs/customization-guide.md))
 
 ### 4. Install into your AI platform
 
@@ -91,15 +106,18 @@ This creates:
 ./scripts/install.sh --platform claude-code
 ```
 
-### 5. Use
+### 5. Start using it
 
-In your AI agent, invoke skills by name:
+Open your AI agent and talk naturally:
 
-- "Evaluate this opportunity at ExampleCorp" (triggers `opportunity-evaluator`)
-- "Build me a target company list for AI/ML roles" (triggers `target-list-generator`)
-- "Review my resume for this role" (triggers `hm-review`)
-- "Let's do a mock interview for a Staff Engineer panel" (triggers `mock-interview-loop`)
-- "Help me write a STAR story about my distributed systems project" (triggers `star-story`)
+- "Evaluate this opportunity at Stripe — here's the JD: [paste]"
+- "Build me a target company list for AI infrastructure roles"
+- "Review my resume against this Staff Engineer posting"
+- "Run a mock interview for a systems design panel"
+- "Write a STAR story about my service mesh migration project"
+- "Draft a referral request to send to my contact at Datadog"
+
+The agent discovers and invokes the right skills automatically based on your request.
 
 ## Platform Support
 
@@ -107,7 +125,9 @@ In your AI agent, invoke skills by name:
 |----------|--------|----------------|
 | Cursor | Supported | `./scripts/install.sh --platform cursor` |
 | Claude Code | Supported | `./scripts/install.sh --platform claude-code` |
-| Others | Compatible | Skills use standard Agent Skills format; see `docs/platforms/` |
+| Others | Compatible | Skills use standard Agent Skills format; see [platform guides](docs/platforms/) |
+
+Marketplace publishing (Cursor, Claude Code, Codex) is planned for future releases.
 
 ## Data Privacy
 
@@ -116,7 +136,7 @@ This toolkit is designed with privacy as a core principle:
 - **No personal data in the repo.** All personal information stays in gitignored `config/` or in `~/.ai-career-toolkit/`.
 - **Two-tier storage.** Toolkit settings in `./config/` (project-scoped), personal career data in `~/.ai-career-toolkit/` (identity-scoped, outside any repo).
 - **Templates use placeholders.** `{{YourName}}`, `{{Company}}`, etc.
-- **Privacy rules included.** `rules/job-artifact-privacy.mdc` enforces sanitization guardrails.
+- **Privacy rules included.** `rules/job-artifact-privacy.mdc` enforces sanitization guardrails when your agent writes career artifacts.
 
 ## Project Structure
 
@@ -128,13 +148,17 @@ ai-career-toolkit/
 ├── rules/               # Agent behavior rules
 ├── workflow-docs/       # Job search methodology
 ├── config/              # Your local settings (gitignored)
-├── config.example/      # Example config to copy
+├── config.example/      # Example config to copy and customize
 ├── docs/                # Platform guides and customization
-├── scripts/             # Setup and install scripts
+├── scripts/             # Install scripts
 ├── setup.sh             # First-run setup
 ├── LICENSE              # MIT
 └── README.md
 ```
+
+## Current Focus
+
+This release targets **software engineering and tech roles** (IC track: Mid through Principal). Support for non-tech roles (sales, marketing, product, design, ops) is tracked in [#1](https://github.com/ScoopedOutStudios/ai-career-toolkit/issues/1).
 
 ## Contributing
 

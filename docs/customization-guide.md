@@ -6,17 +6,17 @@ How to personalize ai-career-toolkit for your job search.
 
 The role thesis is the foundation of your search. It defines what you're looking for and what you'll filter on.
 
-1. Copy the template: `cp templates/role-thesis.md ~/.ai-career-toolkit/role-thesis.md`
-2. Fill in every section honestly — this is private, be specific
-3. Pay special attention to the Quick Filter Checklist — the `opportunity-evaluator` skill uses it
+1. Edit `~/.ai-career-toolkit/role-thesis.md` (created by `setup.sh` with example content). If you prefer to start from a blank template, copy `templates/role-thesis.md` instead.
+2. Fill in every section honestly — this is private and never committed to git.
+3. Pay special attention to the Quick Filter Checklist — the `opportunity-evaluator` skill uses it.
 
 ## Step 2: Build Your Voice Pack
 
 The voice pack makes `in-my-voice` work. Without it, rewrites will use a generic professional tone.
 
-1. Copy the example: `cp -r config.example/voice-pack config/voice-pack`
-2. Replace the placeholder content with your actual writing patterns
-3. The easiest way to build a voice pack: ask your AI agent to analyze 5-10 samples of your writing (emails, LinkedIn posts, docs) and generate a profile
+1. Edit the files in `config/voice-pack/` (created by `setup.sh` with starter content).
+2. Replace the placeholder content with your actual writing patterns.
+3. The easiest way to build a voice pack: ask your AI agent to analyze 5-10 samples of your writing (emails, LinkedIn posts, docs) and generate a profile.
 
 ## Step 3: Configure Targeting
 
@@ -30,9 +30,10 @@ targeting:
   company_stages:
     - growth-stage
     - public-scale
+  role: Software Engineer
+  level: Staff
   geo_remote:
     - remote-first
-  role_level: Staff
   exclusions:
     - crypto
 ```
@@ -65,4 +66,3 @@ Refer to `workflow-docs/operating-workflow.md` for the full methodology:
 - **Weekly**: Review pipeline health, close stale opportunities, retier companies
 - **Per-opportunity**: Run `opportunity-evaluator` before investing significant time
 - **Per-interview**: Run mock loops, select stories, prepare questions
-

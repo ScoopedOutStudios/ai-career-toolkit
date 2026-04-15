@@ -2,7 +2,7 @@
 
 Hi {{HiringManagerName}},
 
-I am excited to apply for the {{RoleTitle}} role at {{Company}}. I focus on building reliable, high-leverage systems and helping teams ship high-quality products with clear engineering standards.
+I'd like to apply for the {{RoleTitle}} role at {{Company}}. I focus on building reliable, high-leverage systems and helping teams ship high-quality products with clear engineering standards.
 
 In my recent work, I have:
 - Led cross-functional efforts that improved delivery speed and reliability.

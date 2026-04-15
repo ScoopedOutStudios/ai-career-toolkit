@@ -2,10 +2,11 @@
 
 ## Installation
 
-Run the install script from your project directory:
+**Important:** Claude Code installs skills into the current working directory's `.claude/` folder. Run the install command from the root of the project where you want to use the toolkit.
 
 ```bash
-./scripts/install.sh --platform claude-code
+cd /path/to/your-project
+/path/to/ai-career-toolkit/scripts/install.sh --platform claude-code
 ```
 
 This copies:
@@ -45,10 +46,12 @@ In Claude Code, invoke skills naturally in conversation:
 
 ## Updating
 
-When the toolkit is updated, re-run the install script:
+When the toolkit is updated, pull the latest and re-run the install from your project directory:
 
 ```bash
 cd /path/to/ai-career-toolkit
 git pull
-./scripts/install.sh --platform claude-code
+
+cd /path/to/your-project
+/path/to/ai-career-toolkit/scripts/install.sh --platform claude-code
 ```
