@@ -1,7 +1,7 @@
 ---
-
-## name: opportunity-evaluator
+name: opportunity-evaluator
 description: Evaluate a company and role as a potential career opportunity. Parses job descriptions, researches the company as an employer, scores against the user's role thesis and expectation rubric, and produces a pursue/park/skip recommendation. Use when a new opportunity surfaces and needs structured evaluation.
+---
 
 # Opportunity Evaluator
 

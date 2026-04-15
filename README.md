@@ -10,15 +10,17 @@ Most job searches are chaos: scattered notes in Google Docs, inconsistent interv
 
 ai-career-toolkit is a set of AI agent skills, templates, and workflow frameworks that turn your job search into a structured, repeatable process. Install the skills into your AI coding agent (Cursor, Claude Code, or any system that supports [Agent Skills](https://agentskills.io)), and you get:
 
-| Without the toolkit | With the toolkit |
-|---|---|
-| Manually researching each company in browser tabs | `opportunity-evaluator` scores a company + role and gives you a pursue/park/skip recommendation |
-| Spreadsheet of company names with no prioritization | `target-list-generator` builds a scored, tiered target list from your criteria |
-| Generic resume sent everywhere | `hm-review` reviews your materials through recruiter and hiring manager lenses |
-| Inconsistent interview answers | `mock-interview-loop` runs scored practice rounds with specific feedback |
-| Rough notes that aren't interview-ready | `star-story` converts experience into tight STAR narratives |
-| Outreach messages that sound like templates | `social-content` + `in-my-voice` produce authentic, personal outreach |
-| No idea what "Staff Engineer" means at company X | `research-guru` digs up eng culture, comp data, hiring signals, and sentiment |
+
+| Without the toolkit                                 | With the toolkit                                                                                |
+| --------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Manually researching each company in browser tabs   | `opportunity-evaluator` scores a company + role and gives you a pursue/park/skip recommendation |
+| Spreadsheet of company names with no prioritization | `target-list-generator` builds a scored, tiered target list from your criteria                  |
+| Generic resume sent everywhere                      | `hm-review` reviews your materials through recruiter and hiring manager lenses                  |
+| Inconsistent interview answers                      | `mock-interview-loop` runs scored practice rounds with specific feedback                        |
+| Rough notes that aren't interview-ready             | `star-story` converts experience into tight STAR narratives                                     |
+| Outreach messages that sound like templates         | `social-content` + `in-my-voice` produce authentic, personal outreach                           |
+| No idea what "Staff Engineer" means at company X    | `research-guru` digs up eng culture, comp data, hiring signals, and sentiment                   |
+
 
 All of this runs locally on your machine. No data leaves your control. No accounts to create.
 
@@ -28,28 +30,32 @@ All of this runs locally on your machine. No data leaves your control. No accoun
 
 AI agent skills that follow the [Agent Skills](https://agentskills.io) format:
 
-| Skill | What it does |
-|-------|-------------|
+
+| Skill                     | What it does                                                                          |
+| ------------------------- | ------------------------------------------------------------------------------------- |
 | **opportunity-evaluator** | Evaluate a company + role with structured scoring and pursue/park/skip recommendation |
-| **target-list-generator** | Build a scored, tiered list of target companies from your criteria |
-| **hm-review** | Dual-lens resume/application review (recruiter + hiring manager perspective) |
-| **mock-interview-loop** | Iterative mock interviews with 1-5 scoring and feedback |
-| **star-story** | Build and refine STAR stories for behavioral interviews |
-| **social-content** | LinkedIn posts, recruiter outreach, referral requests, follow-ups |
-| **content-review** | Structured editorial review with rewrite and rationale |
-| **tech-content-review** | Technical writing review with audience-adaptive calibration |
-| **in-my-voice** | Rewrite content to match your personal voice using a voice pack |
+| **target-list-generator** | Build a scored, tiered list of target companies from your criteria                    |
+| **hm-review**             | Dual-lens resume/application review (recruiter + hiring manager perspective)          |
+| **mock-interview-loop**   | Iterative mock interviews with 1-5 scoring and feedback                               |
+| **star-story**            | Build and refine STAR stories for behavioral interviews                               |
+| **social-content**        | LinkedIn posts, recruiter outreach, referral requests, follow-ups                     |
+| **content-review**        | Structured editorial review with rewrite and rationale                                |
+| **tech-content-review**   | Technical writing review with audience-adaptive calibration                           |
+| **in-my-voice**           | Rewrite content to match your personal voice using a voice pack                       |
+
 
 ### Agents (4)
 
 Agent definitions that orchestrate skills and handle handoffs:
 
-| Agent | Role |
-|-------|------|
-| **career-guide** | Career strategy, role positioning, offer tradeoffs |
-| **interview-prep-coach** | Interview readiness, story building, mock practice |
-| **research-guru** | Company intel, compensation benchmarking, market research |
-| **wordsmith-editor** | Editorial specialist for all job-search writing |
+
+| Agent                    | Role                                                      |
+| ------------------------ | --------------------------------------------------------- |
+| **career-guide**         | Career strategy, role positioning, offer tradeoffs        |
+| **interview-prep-coach** | Interview readiness, story building, mock practice        |
+| **research-guru**        | Company intel, compensation benchmarking, market research |
+| **wordsmith-editor**     | Editorial specialist for all job-search writing           |
+
 
 ### Templates (5)
 
@@ -86,6 +92,7 @@ cd ai-career-toolkit
 ```
 
 This creates two directories:
+
 - `./config/` — your local toolkit settings (gitignored, stays in repo)
 - `~/.ai-career-toolkit/` — your personal career data (outside the repo entirely)
 
@@ -121,11 +128,13 @@ The agent discovers and invokes the right skills automatically based on your req
 
 ## Platform Support
 
-| Platform | Status | Install Method |
-|----------|--------|----------------|
-| Cursor | Supported | `./scripts/install.sh --platform cursor` |
-| Claude Code | Supported | `./scripts/install.sh --platform claude-code` |
-| Others | Compatible | Skills use standard Agent Skills format; see [platform guides](docs/platforms/) |
+
+| Platform    | Status     | Install Method                                                                  |
+| ----------- | ---------- | ------------------------------------------------------------------------------- |
+| Cursor      | Supported  | `./scripts/install.sh --platform cursor`                                        |
+| Claude Code | Supported  | `./scripts/install.sh --platform claude-code`                                   |
+| Others      | Compatible | Skills use standard Agent Skills format; see [platform guides](docs/platforms/) |
+
 
 Marketplace publishing (Cursor, Claude Code, Codex) is planned for future releases.
 
