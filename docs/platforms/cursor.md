@@ -2,17 +2,19 @@
 
 ## Installation
 
-Run the install script:
+Run the install script from your clone:
 
 ```bash
+cd /path/to/ai-career-toolkit
 ./scripts/install.sh --platform cursor
 ```
 
 This copies:
 - Skills to `~/.cursor/skills/<skill-name>/SKILL.md`
 - Agents to `~/.cursor/agents/<agent-name>.md`
+- Rules to `~/.cursor/rules/*.mdc` (privacy + writing-quality guardrails — **global** to your Cursor install)
 
-Restart Cursor or reload the window if skills and agents don't appear immediately.
+Restart Cursor or reload the window if skills, agents, or rules don't appear immediately.
 
 ## How It Works
 
@@ -20,11 +22,11 @@ Cursor natively supports the Agent Skills format. Once installed:
 
 - **Skills** are automatically discovered by Cursor's agent and can be invoked by name or triggered by matching descriptions.
 - **Agents** appear as available sub-agents that can be delegated to.
-- **Rules** in `rules/` can be copied to your project's `.cursor/rules/` directory for project-level behavior.
+- **Rules** — `install.sh` installs them globally under `~/.cursor/rules/`. Use project-level rules only if you want different behavior per repo.
 
-## Project-Level Setup
+## Project-Level Setup (optional)
 
-If you want the toolkit's rules active in a specific project:
+If you prefer **project-scoped** rules instead of (or in addition to) the global copy:
 
 ```bash
 mkdir -p .cursor/rules

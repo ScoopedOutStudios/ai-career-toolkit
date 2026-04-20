@@ -19,8 +19,8 @@ Make writing personal, credible, and human while removing generic cookie-cutter 
 
 This skill uses a personal voice pack stored locally. Look for your voice pack in these locations (in order of priority):
 
-1. `config/voice-pack/` (inside this toolkit's cloned repo)
-2. `~/.ai-career-toolkit/voice-pack/`
+1. `~/.ai-career-toolkit/voice-pack/` (preferred — stays outside any repo)
+2. `config/voice-pack/` (inside this toolkit clone — fine for non-sensitive starter samples)
 
 If no voice pack exists, run from-scratch calibration prompts and produce a provisional voice profile. See `config.example/voice-pack/` for the expected structure.
 

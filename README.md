@@ -2,6 +2,12 @@
 
 Stop winging your job search. Run it like an engineering system.
 
+## Prerequisites
+
+- **bash** and a Unix-like environment (macOS, Linux, or [WSL](https://learn.microsoft.com/en-us/windows/wsl/) on Windows). The toolkit is shell scripts plus markdown; there is no separate app runtime.
+- An AI coding agent that supports **[Agent Skills](https://agentskills.io)** — tested paths are **Cursor** and **Claude Code**.
+- If `setup.sh` or `scripts/install.sh` fails with “permission denied”, run `bash setup.sh` / `bash scripts/install.sh …` or mark them executable once (`chmod +x setup.sh scripts/install.sh`).
+
 ## The Problem
 
 Most job searches are chaos: scattered notes in Google Docs, inconsistent interview prep, copy-pasting the same ChatGPT prompts, losing track of which companies you've contacted, and writing cover letters that sound like everyone else's. You know how to build disciplined systems at work — but your career search doesn't get the same rigor.
@@ -22,7 +28,7 @@ ai-career-toolkit is a set of AI agent skills, templates, and workflow framework
 | No idea what "Staff Engineer" means at company X    | `research-guru` digs up eng culture, comp data, hiring signals, and sentiment                   |
 
 
-All of this runs locally on your machine. No data leaves your control. No accounts to create.
+**Local files, no toolkit backend.** Your generated notes and config live on disk under `./config/` and `~/.ai-career-toolkit/`. This repo does not create accounts or run a server. When you use skills through Cursor, Claude Code, or another host, **that platform’s normal data-handling and model-provider policies apply** (retention, logging, training — check their settings).
 
 ## What's Inside
 
@@ -75,6 +81,7 @@ A tool-agnostic methodology for running a disciplined job search (works with any
 - Daily operating cadence with WIP limits (Today: max 3, This Week: max 8)
 - Weekly review process with health metrics
 - Tier-based company targeting (T1/T2/T3 with outreach priorities)
+- **[Company list pipeline](workflow-docs/company-list-pipeline.md)** — profile → per-domain research → merged `target-companies.tsv` (v1 stays simple: no scoring scripts)
 
 ## Quick Start (~10 minutes)
 
@@ -89,12 +96,13 @@ cd ai-career-toolkit
 
 ```bash
 ./setup.sh
+# or: bash setup.sh
 ```
 
-This creates two directories:
+This creates two areas:
 
-- `./config/` — your local toolkit settings (gitignored, stays in repo)
-- `~/.ai-career-toolkit/` — your personal career data (outside the repo entirely)
+- `./config/` — your local toolkit settings (gitignored, stays next to the clone)
+- `~/.ai-career-toolkit/` — your personal career data (outside the repo), including `source-lists/` for per-domain company drafts
 
 ### 3. Customize
 
@@ -104,14 +112,25 @@ This creates two directories:
 
 ### 4. Install into your AI platform
 
-```bash
-# Auto-detect platform
-./scripts/install.sh
+The install script copies **skills**, **agents**, and **rules** (privacy + writing quality).
 
-# Or specify explicitly
+**Cursor** (global install under `~/.cursor/`):
+
+```bash
+cd /path/to/ai-career-toolkit
 ./scripts/install.sh --platform cursor
-./scripts/install.sh --platform claude-code
+# or auto-detect if ~/.cursor exists:
+./scripts/install.sh
 ```
+
+**Claude Code** — run from the **project where you want `.claude/`** (your job-search notes repo or monorepo root), not only from inside the toolkit clone:
+
+```bash
+cd /path/to/your-job-search-workspace
+/path/to/ai-career-toolkit/scripts/install.sh --platform claude-code
+```
+
+Paths like `.claude/skills` are relative to your **current working directory**. See [Claude Code guide](docs/platforms/claude-code.md).
 
 ### 5. Start using it
 
@@ -125,6 +144,24 @@ Open your AI agent and talk naturally:
 - "Draft a referral request to send to my contact at Datadog"
 
 The agent discovers and invokes the right skills automatically based on your request.
+
+After you pull updates, re-run `./scripts/install.sh` for your platform so skills, agents, and rules stay in sync.
+
+### If something goes wrong
+
+- **“Could not auto-detect platform”** — pass `--platform cursor` or `--platform claude-code` explicitly.
+- **Claude Code: skills missing** — you probably ran `install.sh` from the wrong directory; `cd` to the project that should own `.claude/` and re-run with the absolute path to `scripts/install.sh`.
+- **Skills don’t update** — restart Cursor / reload the window, or start a new Claude Code session.
+
+## First value in ~30 minutes
+
+1. Complete **Quick Start** through install.
+2. Fill at least **Quick Filter** and **Must-haves** in `~/.ai-career-toolkit/role-thesis.md`.
+3. Set `targeting.domains` and your level in `config/settings.yaml`.
+4. In your agent, ask for a **target company list** for one domain (triggers `target-list-generator` → `research-guru`).
+5. Paste a real job description and ask for an **opportunity evaluation** (triggers `opportunity-evaluator`).
+
+You should have a TSV under `~/.ai-career-toolkit/target-companies.tsv` and one structured pursue/park/skip write-up. That is the smallest “system is real” loop.
 
 ## Platform Support
 
@@ -140,12 +177,24 @@ Marketplace publishing (Cursor, Claude Code, Codex) is planned for future releas
 
 ## Data Privacy
 
-This toolkit is designed with privacy as a core principle:
+Design goals:
 
-- **No personal data in the repo.** All personal information stays in gitignored `config/` or in `~/.ai-career-toolkit/`.
-- **Two-tier storage.** Toolkit settings in `./config/` (project-scoped), personal career data in `~/.ai-career-toolkit/` (identity-scoped, outside any repo).
+- **No personal data in the git-tracked tree by default.** Keep real resumes, comp, recruiter names, and employer-specific notes in `~/.ai-career-toolkit/` or another private location — not in a public fork.
+- **Two-tier storage.** Toolkit settings in `./config/` (next to the clone, gitignored), personal career data in `~/.ai-career-toolkit/` (outside the clone).
 - **Templates use placeholders.** `{{YourName}}`, `{{Company}}`, etc.
-- **Privacy rules included.** `rules/job-artifact-privacy.mdc` enforces sanitization guardrails when your agent writes career artifacts.
+- **Rules ship with the toolkit.** `install.sh` copies `rules/*.mdc` into your Cursor or Claude Code rules path so agents default to safer handling of sensitive artifacts. You are still responsible for what you paste into any cloud-hosted model.
+
+**Honest trust boundary:** the toolkit does not phone home, but **your AI platform may process prompts** according to its own policies. Treat pasted JDs and resumes as sensitive.
+
+## Sharing this project (e.g. LinkedIn)
+
+Short narrative that matches v1:
+
+- Local-first **skills + templates** for **software and technical IC** job searches (Mid–Principal).
+- Covers **target companies**, **opportunity triage**, **resume/application review**, and **interview prep** — not a hosted ATS or a scoring product.
+- **Open source** — clone, run `setup.sh`, install into Cursor or Claude Code, and iterate in the open.
+
+Link the repo; invite issues and improvements that stay within the [v1 scope](#current-focus-v1-scope) so feedback stays actionable.
 
 ## Project Structure
 
@@ -165,9 +214,20 @@ ai-career-toolkit/
 └── README.md
 ```
 
-## Current Focus
+## Current focus (v1 scope)
 
-This release targets **software engineering and tech roles** (IC track: Mid through Principal). Support for non-tech roles (sales, marketing, product, design, ops) is tracked in [#1](https://github.com/ScoopedOutStudios/ai-career-toolkit/issues/1).
+**In scope for this public release**
+
+- **Software engineering and technical IC** roles (individual contributor track, roughly **Mid through Principal**): e.g. backend, frontend, full-stack, platform, infrastructure, SRE, data engineering, ML engineering — roles where the workflow and rubric fit naturally.
+- **Artifacts:** Agent Skills, agent personas, templates, workflow docs, bash setup/install — **no** hosted service, **no** company-list scoring scripts or automated ATS integrations in v1.
+
+**Explicitly out of scope for v1**
+
+- Non-technical job families (sales, marketing, non-technical PM, etc.) — discussion in [#1](https://github.com/ScoopedOutStudios/ai-career-toolkit/issues/1).
+- Manager-only career tracks as a first-class path (some content may still be useful; the kit is IC-calibrated).
+- Marketplace packaging (may come later).
+
+Prioritize companies with **tiers**, **role thesis**, and **`opportunity-evaluator`** — not a separate scoring pipeline.
 
 ## Contributing
 

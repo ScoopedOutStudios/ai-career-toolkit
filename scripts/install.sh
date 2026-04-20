@@ -10,7 +10,7 @@ PLATFORM=""
 usage() {
   echo "Usage: $(basename "$0") [--platform cursor|claude-code] [--dry-run]"
   echo ""
-  echo "Install skills and agents into your AI agent platform."
+  echo "Install skills, agents, and rules into your AI agent platform."
   echo ""
   echo "Options:"
   echo "  --platform PLATFORM  Target platform: cursor, claude-code (default: auto-detect)"
@@ -18,8 +18,10 @@ usage() {
   echo "  --help               Show this help"
   echo ""
   echo "Platforms:"
-  echo "  cursor       Copies to ~/.cursor/skills/ and ~/.cursor/agents/"
-  echo "  claude-code  Copies to .claude/skills/ and .claude/agents/ in current project"
+  echo "  cursor       Copies skills, agents, and rules to ~/.cursor/{skills,agents,rules}/"
+  echo "  claude-code  Copies skills, agents, and rules to .claude/{skills,agents,rules}/"
+  echo "               (paths are relative to the current working directory — cd to your"
+  echo "               job-search project first, then run this script with an absolute path)"
 }
 
 while [[ $# -gt 0 ]]; do
@@ -59,10 +61,12 @@ case "$PLATFORM" in
   cursor)
     SKILLS_DEST="${HOME}/.cursor/skills"
     AGENTS_DEST="${HOME}/.cursor/agents"
+    RULES_DEST="${HOME}/.cursor/rules"
     ;;
   claude-code)
     SKILLS_DEST=".claude/skills"
     AGENTS_DEST=".claude/agents"
+    RULES_DEST=".claude/rules"
     ;;
   *)
     echo "Error: Unsupported platform '$PLATFORM'. Use: cursor, claude-code" >&2
@@ -122,15 +126,27 @@ done
 shopt -u nullglob
 
 echo ""
+echo "Rules:"
+RULES_SRC="${REPO_ROOT}/rules"
+shopt -s nullglob
+for rule_file in "${RULES_SRC}"/*.mdc; do
+  [[ -f "$rule_file" ]] || continue
+  copy_file "$rule_file" "${RULES_DEST}/$(basename "$rule_file")"
+done
+shopt -u nullglob
+
+echo ""
 if [[ $DRY_RUN -eq 1 ]]; then
   echo "Dry run complete — no files were written."
 else
   echo "Installation complete."
   echo ""
   if [[ "$PLATFORM" == "cursor" ]]; then
-    echo "Restart Cursor or reload the window if skills/agents don't appear immediately."
+    echo "Restart Cursor or reload the window if skills/agents/rules don't appear immediately."
+    echo "Rules were copied to ~/.cursor/rules/ (global). For project-only rules, copy rules/*.mdc"
+    echo "into that project's .cursor/rules/ instead — see docs/platforms/cursor.md."
   elif [[ "$PLATFORM" == "claude-code" ]]; then
-    echo "Skills and agents are installed in the current project directory."
+    echo "Skills, agents, and rules are installed under .claude/ in the current directory."
     echo "Start a new Claude Code session to pick them up."
   fi
 fi

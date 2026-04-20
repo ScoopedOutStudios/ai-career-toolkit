@@ -2,6 +2,8 @@
 
 Thanks for your interest in contributing. This toolkit is opinionated and maintained when useful — contributions that align with the project's goals are welcome.
 
+**Environment:** bash on macOS, Linux, or WSL. There is no Node or Python requirement for core setup/install.
+
 ## What We're Looking For
 
 - New skills that fill gaps in the job search workflow
@@ -22,7 +24,7 @@ Thanks for your interest in contributing. This toolkit is opinionated and mainta
 1. Fork the repo
 2. Create a branch for your change
 3. Make your changes following the conventions below
-4. Test: run `./setup.sh --dry-run` and `./scripts/install.sh --dry-run` to verify nothing breaks
+4. Test: run `./setup.sh --dry-run` and `./scripts/install.sh --dry-run --platform cursor` (use `--platform claude-code` from a throwaway directory if you prefer — it only prints copy targets)
 5. Submit a PR with a clear description of what changed and why
 
 ## Conventions

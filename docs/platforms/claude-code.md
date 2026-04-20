@@ -12,6 +12,7 @@ cd /path/to/your-project
 This copies:
 - Skills to `.claude/skills/<skill-name>/SKILL.md` in the current directory
 - Agents to `.claude/agents/<agent-name>.md` in the current directory
+- Rules to `.claude/rules/*.mdc` in the current directory
 
 ## How It Works
 
@@ -22,7 +23,9 @@ Claude Code supports Agent Skills via `.claude/skills/` directories and sub-agen
 
 ## Project-Level Rules
 
-Claude Code uses `CLAUDE.md` and `.claude/rules/` for project instructions. To add the toolkit's rules:
+Claude Code uses `CLAUDE.md` and `.claude/rules/` for project instructions. **`install.sh --platform claude-code` already copies** `rules/*.mdc` into `.claude/rules/` when you run it from your project root.
+
+To refresh rules manually:
 
 ```bash
 mkdir -p .claude/rules

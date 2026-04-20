@@ -76,12 +76,17 @@ echo ""
 echo "2. Personal data directory (${DATA_DIR}):"
 ensure_dir "$DATA_DIR" "personal career data"
 ensure_dir "${DATA_DIR}/voice-pack" "voice pack"
+ensure_dir "${DATA_DIR}/source-lists" "per-domain company list drafts"
 ensure_dir "${DATA_DIR}/opportunities" "opportunity tracking"
 ensure_dir "${DATA_DIR}/interview-notes" "interview notes"
 ensure_dir "${DATA_DIR}/weekly-reviews" "weekly reviews"
 
 if [[ -f "${CONFIG_DIR}/role-thesis.md" ]] && [[ ! -f "${DATA_DIR}/role-thesis.md" ]]; then
   copy_if_missing "${CONFIG_DIR}/role-thesis.md" "${DATA_DIR}/role-thesis.md"
+fi
+
+if [[ -f "${CONFIG_DIR}/target-companies.tsv" ]] && [[ ! -f "${DATA_DIR}/target-companies.tsv" ]]; then
+  copy_if_missing "${CONFIG_DIR}/target-companies.tsv" "${DATA_DIR}/target-companies.tsv"
 fi
 
 echo ""
@@ -94,5 +99,5 @@ else
   echo "  1. Edit config/settings.yaml with your preferences"
   echo "  2. Customize config/voice-pack/ with your writing style"
   echo "  3. Fill out ~/.ai-career-toolkit/role-thesis.md with your target role"
-  echo "  4. Run scripts/install.sh to install skills into your AI agent platform"
+  echo "  4. Run scripts/install.sh to install skills, agents, and rules into your AI agent platform"
 fi

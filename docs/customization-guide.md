@@ -62,7 +62,10 @@ Use `templates/interview-story-system.md` as your framework:
 
 Refer to `workflow-docs/operating-workflow.md` for the full methodology:
 
+For building and merging target company lists from your profile (per-domain drafts under `~/.ai-career-toolkit/source-lists/`), see [company-list-pipeline.md](../workflow-docs/company-list-pipeline.md).
+
 - **Daily**: Pick up to 3 priorities, execute, close what's done
 - **Weekly**: Review pipeline health, close stale opportunities, retier companies
 - **Per-opportunity**: Run `opportunity-evaluator` before investing significant time
 - **Per-interview**: Run mock loops, select stories, prepare questions
+

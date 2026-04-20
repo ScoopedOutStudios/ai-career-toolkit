@@ -15,12 +15,19 @@ Generate a comprehensive, scored list of target companies tailored to the user's
    - Domains of interest (e.g., AI/ML, developer tools, fintech, climate tech, healthcare, enterprise SaaS)
    - Company stage preferences (e.g., growth-stage, late-stage, public-scale, early-stage)
    - Geo/remote requirements (e.g., remote-first, NYC, SF Bay Area, hybrid OK)
-   - Target role (e.g., Software Engineer, Engineering Manager, ML Engineer, SRE)
-   - Target level (e.g., Senior, Staff, Sr Staff, Principal)
+   - Target role and level for **technical IC** search (e.g., Software Engineer, ML Engineer, SRE + Senior through Principal)
    - Exclusion criteria (e.g., no crypto, no defense, no pre-seed)
    - Optional: specific companies to include or research
 
+   If `~/.ai-career-toolkit/role-thesis.md` or `config/role-thesis.md` exists, read it and align exclusions, must-haves, and non-negotiables with the user’s stated criteria (do not contradict their thesis without calling it out).
+
 2. **Existing list** (optional) — if `~/.ai-career-toolkit/target-companies.tsv` exists, read it to avoid duplicates and build on prior work.
+
+3. **Per-domain drafts** (recommended) — for each domain pass, write or update:
+
+   `~/.ai-career-toolkit/source-lists/<domain-slug>-YYYY-MM-DD.tsv`
+
+   using the same column schema as the canonical file. See [company-list-pipeline.md](../../workflow-docs/company-list-pipeline.md) for the full merge workflow.
 
 ## Output Schema
 
@@ -53,6 +60,8 @@ If criteria are not already in `config/settings.yaml`, ask the user interactivel
 ### Step 2: Research by Domain
 
 For each domain of interest, route to `research-guru` to find relevant companies:
+
+- Require **source citations** for factual claims (funding, layoffs, careers page URLs). If the model cannot verify a careers URL or hiring signal, set `Hiring Now` to **Unknown** and avoid inventing links.
 - Top companies in the domain (market leaders and fast risers)
 - Companies with strong engineering culture or brand
 - Companies with known active hiring in the target role level
@@ -81,6 +90,7 @@ For each company, check the careers page or job boards for:
 
 ### Step 5: Compile and Write
 
+- Merge per-domain drafts from `~/.ai-career-toolkit/source-lists/` when present; otherwise merge from this run’s research only
 - Merge with any existing `target-companies.tsv` (update existing rows, append new ones)
 - Sort by tier (T1 first), then alphabetically within tier
 - Write to `~/.ai-career-toolkit/target-companies.tsv`

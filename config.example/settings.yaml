@@ -29,15 +29,12 @@ targeting:
     # - public-scale
     # - nonprofit
 
-  # Role: the function/track you're targeting
-  # Examples: Software Engineer, Engineering Manager, Product Manager,
-  #           Site Reliability Engineer, Data Engineer, ML Engineer,
-  #           Engineering Director, Technical Program Manager
+  # Role: technical IC track (v1 kit is optimized for these)
+  # Examples: Software Engineer, Site Reliability Engineer, Data Engineer, ML Engineer
   role: Software Engineer
 
-  # Level: seniority within the role track
-  # Examples: Mid-level, Senior, Staff, Sr Staff, Principal, Distinguished,
-  #           Manager, Sr Manager, Director, VP
+  # Level: seniority within the IC track
+  # Examples: Mid-level, Senior, Staff, Sr Staff, Principal, Distinguished
   level: Staff
 
   geo_remote:

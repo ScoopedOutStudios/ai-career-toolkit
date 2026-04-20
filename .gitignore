@@ -1,5 +1,5 @@
-# Local config (user-specific settings)
-config/
+# Local config (user-specific settings); keep an empty tracked placeholder
+config/*
 !config/.gitkeep
 
 # Environment files

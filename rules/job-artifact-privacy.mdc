@@ -5,8 +5,10 @@ alwaysApply: true
 
 # Job Artifact Privacy
 
-- Do not commit sensitive personal details unless explicitly approved.
-- Keep recruiter names, compensation specifics, and personal identifiers sanitized in versioned docs.
-- Prefer placeholders or generalized references for private data.
-- If uncertain whether data is sensitive, ask before writing it.
-- When creating examples, default to sanitized, reusable variants.
+Default posture: **treat job-search artifacts as sensitive** unless the user clearly wants them in a shared or versioned place.
+
+- **Never** place recruiter or HM names, compensation details, offer terms, home address, government IDs, or other personal identifiers into git-tracked project files unless the user explicitly asks and confirms.
+- **Prefer** `~/.ai-career-toolkit/` (or another clearly private location) for resumes, outreach drafts, interview notes, and company research that ties to the user’s identity.
+- **Sanitize** anything that might be copied into a repo, paste, or PR: use placeholders (`{{Company}}`, `Recruiter A`) or redact.
+- If uncertain whether data is sensitive, **ask** before writing it.
+- When creating examples, default to **obviously fake** companies, names, and numbers.
