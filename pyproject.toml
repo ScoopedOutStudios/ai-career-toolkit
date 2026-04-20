@@ -1,0 +1,36 @@
+[build-system]
+requires = ["hatchling>=1.18"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ai-career-toolkit"
+version = "0.1.0"
+description = "CLI for guided setup and verification of the ai-career-toolkit (skills, agents, workflows)"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [{ name = "ScoopedOutStudios" }]
+keywords = ["career", "job-search", "cursor", "claude", "agents"]
+
+[project.urls]
+Homepage = "https://github.com/ScoopedOutStudios/ai-career-toolkit"
+
+[project.scripts]
+ai-career-toolkit = "ai_career_toolkit.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["ai_career_toolkit"]
+
+# Ship the same tree as the git repo (minus Python packaging) inside the wheel so
+# `pip install` works without a separate clone. Editable installs use the repo root instead.
+[tool.hatch.build.targets.wheel.force-include]
+"skills" = "ai_career_toolkit/bundle/skills"
+"agents" = "ai_career_toolkit/bundle/agents"
+"rules" = "ai_career_toolkit/bundle/rules"
+"config.example" = "ai_career_toolkit/bundle/config.example"
+"templates" = "ai_career_toolkit/bundle/templates"
+"workflow-docs" = "ai_career_toolkit/bundle/workflow-docs"
+"docs" = "ai_career_toolkit/bundle/docs"
+"scripts" = "ai_career_toolkit/bundle/scripts"
+"setup.sh" = "ai_career_toolkit/bundle/setup.sh"
+"LICENSE" = "ai_career_toolkit/bundle/LICENSE"

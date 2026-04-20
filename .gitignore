@@ -19,3 +19,16 @@ Thumbs.db
 
 # Node (if any tooling is added later)
 node_modules/
+
+# Python packaging
+dist/
+build/
+*.egg-info/
+.eggs/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+venv/
+.venv/

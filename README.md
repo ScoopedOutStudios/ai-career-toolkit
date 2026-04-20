@@ -4,9 +4,10 @@ Stop winging your job search. Run it like an engineering system.
 
 ## Prerequisites
 
-- **bash** and a Unix-like environment (macOS, Linux, or [WSL](https://learn.microsoft.com/en-us/windows/wsl/) on Windows). The toolkit is shell scripts plus markdown; there is no separate app runtime.
+- **bash** and a Unix-like environment (macOS, Linux, or [WSL](https://learn.microsoft.com/en-us/windows/wsl/) on Windows). Install into Cursor/Claude still uses `scripts/install.sh` (bash).
 - An AI coding agent that supports **[Agent Skills](https://agentskills.io)** — tested paths are **Cursor** and **Claude Code**.
 - If `setup.sh` or `scripts/install.sh` fails with “permission denied”, run `bash setup.sh` / `bash scripts/install.sh …` or mark them executable once (`chmod +x setup.sh scripts/install.sh`).
+- **Optional (recommended onboarding):** **Python 3.10+** if you use the `ai-career-toolkit` CLI (`pipx` / `pip`) for guided `init`, `verify`, and `install` — same idea as [Solo OS](https://github.com/ScoopedOutStudios/solo-os). The skills themselves stay markdown + bash; Python is only the installer UX.
 
 ## The Problem
 
@@ -85,6 +86,36 @@ A tool-agnostic methodology for running a disciplined job search (works with any
 
 ## Quick Start (~10 minutes)
 
+Pick **one** path: **pip/pipx + CLI** (guided `init` / `verify`) or **git clone + shell scripts** (no Python required for setup).
+
+### Path A — pip / pipx + CLI (recommended)
+
+Install the package (isolates CLI tools; same pattern as Solo OS):
+
+```bash
+pipx install git+https://github.com/ScoopedOutStudios/ai-career-toolkit.git
+# or: python3 -m pip install --user git+https://github.com/ScoopedOutStudios/ai-career-toolkit.git
+```
+
+Guided setup materializes skills/agents/rules into a directory (default **`~/ai-career-toolkit`** when you install from PyPI, or your **git checkout** when you use `pip install -e .` from a clone), creates `config/` there, and creates **`~/.ai-career-toolkit/`** for private notes:
+
+```bash
+ai-career-toolkit init              # interactive prompts; use -y / --yes for CI-style defaults
+ai-career-toolkit verify            # layout, config, data home; add --ide cursor to check ~/.cursor/*
+ai-career-toolkit install --platform cursor   # runs scripts/install.sh (bash)
+```
+
+Useful options:
+
+- `init --workspace /path` — install directory for the toolkit tree (skills, `scripts/`, etc.).
+- `init --data-home /path` — override personal data root (default: `~/.ai-career-toolkit` or `AI_CAREER_TOOLKIT_HOME`).
+- `verify --workspace /path` — validate a specific toolkit root.
+- `verify --format json` — machine-readable check list.
+
+After `init`, set **`AI_CAREER_TOOLKIT_ROOT`** to your toolkit directory (the CLI prints an `export` line) so docs and automation resolve the same path.
+
+### Path B — git clone + bash
+
 ### 1. Clone
 
 ```bash
@@ -155,9 +186,9 @@ After you pull updates, re-run `./scripts/install.sh` for your platform so skill
 
 ## First value in ~30 minutes
 
-1. Complete **Quick Start** through install.
+1. Complete **Quick Start** through install (Path A: `ai-career-toolkit init` then `ai-career-toolkit install --platform cursor`, or Path B: `setup.sh` + `scripts/install.sh`).
 2. Fill at least **Quick Filter** and **Must-haves** in `~/.ai-career-toolkit/role-thesis.md`.
-3. Set `targeting.domains` and your level in `config/settings.yaml`.
+3. Set `targeting.domains` and your level in `config/settings.yaml` under your **toolkit root** (e.g. `~/ai-career-toolkit/config/settings.yaml` if you used the CLI default).
 4. In your agent, ask for a **target company list** for one domain (triggers `target-list-generator` → `research-guru`).
 5. Paste a real job description and ask for an **opportunity evaluation** (triggers `opportunity-evaluator`).
 
@@ -200,6 +231,8 @@ Link the repo; invite issues and improvements that stay within the [v1 scope](#c
 
 ```
 ai-career-toolkit/
+├── ai_career_toolkit/   # Python CLI (init / verify / install) — optional pip install
+├── pyproject.toml       # Package metadata (hatchling)
 ├── skills/              # AI agent skills (SKILL.md format)
 ├── agents/              # Agent definitions
 ├── templates/           # Reusable career frameworks
@@ -209,7 +242,7 @@ ai-career-toolkit/
 ├── config.example/      # Example config to copy and customize
 ├── docs/                # Platform guides and customization
 ├── scripts/             # Install scripts
-├── setup.sh             # First-run setup
+├── setup.sh             # First-run setup (bash)
 ├── LICENSE              # MIT
 └── README.md
 ```
@@ -227,7 +260,7 @@ ai-career-toolkit/
 - Manager-only career tracks as a first-class path (some content may still be useful; the kit is IC-calibrated).
 - Marketplace packaging (may come later).
 
-Prioritize companies with **tiers**, **role thesis**, and **`opportunity-evaluator`** — not a separate scoring pipeline.
+Prioritize companies with **tiers**, **role thesis**, and `**opportunity-evaluator`** — not a separate scoring pipeline.
 
 ## Contributing
 

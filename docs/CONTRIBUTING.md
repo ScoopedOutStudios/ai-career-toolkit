@@ -2,7 +2,7 @@
 
 Thanks for your interest in contributing. This toolkit is opinionated and maintained when useful — contributions that align with the project's goals are welcome.
 
-**Environment:** bash on macOS, Linux, or WSL. There is no Node or Python requirement for core setup/install.
+**Environment:** bash on macOS, Linux, or WSL. **Python 3.10+** is required only if you work on the optional `ai-career-toolkit` CLI (`ai_career_toolkit/`). Core skills remain markdown + bash.
 
 ## What We're Looking For
 
@@ -24,8 +24,20 @@ Thanks for your interest in contributing. This toolkit is opinionated and mainta
 1. Fork the repo
 2. Create a branch for your change
 3. Make your changes following the conventions below
-4. Test: run `./setup.sh --dry-run` and `./scripts/install.sh --dry-run --platform cursor` (use `--platform claude-code` from a throwaway directory if you prefer — it only prints copy targets)
+4. Test: run `./setup.sh --dry-run` and `./scripts/install.sh --dry-run --platform cursor` (use `--platform claude-code` from a throwaway directory if you prefer — it only prints copy targets). If you changed the CLI, also run `python -m pip install -e .`, `ai-career-toolkit verify --workspace .`, and `python -m build`.
 5. Submit a PR with a clear description of what changed and why
+
+## CLI development
+
+```bash
+git clone https://github.com/ScoopedOutStudios/ai-career-toolkit.git
+cd ai-career-toolkit
+python3 -m venv .venv && source .venv/bin/activate
+pip install -e .
+ai-career-toolkit --help
+ai-career-toolkit verify --workspace .
+python -m build   # optional: confirm hatchling force-include / wheel contents
+```
 
 ## Conventions
 

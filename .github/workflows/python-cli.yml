@@ -1,0 +1,66 @@
+name: Python CLI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install package
+        run: python -m pip install --upgrade pip && python -m pip install .
+
+      - name: CLI smoke
+        run: |
+          ai-career-toolkit --help
+          ai-career-toolkit init --help
+          ai-career-toolkit verify --help
+          ai-career-toolkit install --help
+
+      - name: Init + verify (materialized tree)
+        run: |
+          rm -rf /tmp/act-ctk
+          ai-career-toolkit init -y --workspace /tmp/act-ctk
+          ai-career-toolkit verify --workspace /tmp/act-ctk
+          test -f /tmp/act-ctk/skills/opportunity-evaluator/SKILL.md
+
+  wheel:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Build wheel
+        run: python -m pip install --upgrade pip build hatchling && python -m build
+
+      - name: Install wheel and smoke
+        run: |
+          python -m pip install dist/*.whl
+          ai-career-toolkit --version
+          rm -rf /tmp/act-whl
+          ai-career-toolkit init -y --workspace /tmp/act-whl
+          ai-career-toolkit verify --workspace /tmp/act-whl
+
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Compile
+        run: python -m compileall -q ai_career_toolkit
