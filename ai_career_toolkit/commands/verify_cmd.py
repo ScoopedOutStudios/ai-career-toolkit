@@ -33,7 +33,7 @@ def _check_cursor_install() -> Check:
     agents = Path.home() / ".cursor" / "agents" / "research-guru.md"
     rules = Path.home() / ".cursor" / "rules" / "job-artifact-privacy.mdc"
     if skills.is_file() and agents.is_file() and rules.is_file():
-        return Check("ide_cursor", True, "Cursor skills, agents, and rules present.", "")
+        return Check("platform_cursor", True, "Cursor skills, agents, and rules present.", "")
     missing = []
     if not skills.is_file():
         missing.append("~/.cursor/skills/…")
@@ -42,7 +42,7 @@ def _check_cursor_install() -> Check:
     if not rules.is_file():
         missing.append("~/.cursor/rules/…")
     return Check(
-        "ide_cursor",
+        "platform_cursor",
         False,
         "Incomplete: " + ", ".join(missing),
         "From your toolkit directory run: ./scripts/install.sh --platform cursor",
@@ -53,16 +53,16 @@ def _check_claude_cwd() -> Check:
     root = Path.cwd()
     skills = root / ".claude" / "skills" / "opportunity-evaluator" / "SKILL.md"
     if skills.is_file():
-        return Check("ide_claude_cwd", True, f"Claude skills found under {root / '.claude'}.", "")
+        return Check("platform_claude_cwd", True, f"Claude skills found under {root / '.claude'}.", "")
     return Check(
-        "ide_claude_cwd",
+        "platform_claude_cwd",
         False,
         f"No .claude/skills in current directory ({root}).",
         "cd your job-search project and run: /path/to/ai-career-toolkit/scripts/install.sh --platform claude-code",
     )
 
 
-def run_verify(*, ide: str, workspace: Path | None, output_format: str) -> int:
+def run_verify(*, platform: str, workspace: Path | None, output_format: str) -> int:
     results: list[Check] = []
 
     root: Path | None = None
@@ -179,9 +179,9 @@ def run_verify(*, ide: str, workspace: Path | None, output_format: str) -> int:
             )
         )
 
-    if ide in ("cursor", "both"):
+    if platform in ("cursor", "both"):
         results.append(_check_cursor_install())
-    if ide in ("claude-code", "both"):
+    if platform in ("claude-code", "both"):
         results.append(_check_claude_cwd())
 
     return _emit(results, output_format, critical=False)

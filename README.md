@@ -101,7 +101,7 @@ Guided setup materializes skills/agents/rules into a directory (default **`~/ai-
 
 ```bash
 ai-career-toolkit init              # interactive prompts; use -y / --yes for CI-style defaults
-ai-career-toolkit verify            # layout, config, data home; add --ide cursor to check ~/.cursor/*
+ai-career-toolkit verify            # layout, config, data home; add --platform cursor to check ~/.cursor/*
 ai-career-toolkit install --platform cursor   # runs scripts/install.sh (bash)
 ```
 

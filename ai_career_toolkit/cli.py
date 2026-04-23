@@ -41,12 +41,16 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Override personal data directory (default: ~/.ai-career-toolkit or AI_CAREER_TOOLKIT_HOME)",
     )
 
-    p_verify = sub.add_parser("verify", help="Check toolkit layout, config, data home, and optional IDE install")
+    p_verify = sub.add_parser(
+        "verify",
+        help="Check toolkit layout, config, data home, and optional install --platform targets",
+    )
     p_verify.add_argument(
-        "--ide",
+        "--platform",
         choices=("none", "cursor", "claude-code", "both"),
         default="none",
-        help="Also verify IDE file installs (default: none)",
+        metavar="TARGET",
+        help="Also verify install destinations for this target (same as install --platform; default: none)",
     )
     p_verify.add_argument(
         "--workspace",
@@ -93,7 +97,7 @@ def main() -> int:
             from ai_career_toolkit.commands.verify_cmd import run_verify
 
             return run_verify(
-                ide=args.ide,
+                platform=args.platform,
                 workspace=args.workspace,
                 output_format=args.format,
             )
