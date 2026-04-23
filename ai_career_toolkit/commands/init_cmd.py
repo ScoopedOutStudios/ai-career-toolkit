@@ -9,6 +9,7 @@ from pathlib import Path
 
 from ai_career_toolkit.materialize import materialize
 from ai_career_toolkit.paths import (
+    bundled_root,
     default_data_home,
     editable_repo_root,
     is_toolkit_root,
