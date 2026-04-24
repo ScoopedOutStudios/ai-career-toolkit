@@ -7,35 +7,80 @@ import sys
 from pathlib import Path
 
 from ai_career_toolkit.paths import default_data_home, resolve_toolkit_root
+from ai_career_toolkit.ui import (
+    ask_freetext,
+    blank,
+    bold,
+    dim,
+    header,
+    info,
+    pick_many,
+    pick_one,
+    success,
+)
 
 # ---------------------------------------------------------------------------
-# Prompt helpers
+# Option lists for menus
 # ---------------------------------------------------------------------------
 
+ROLE_OPTIONS = [
+    "Software Engineer",
+    "Backend Engineer",
+    "Frontend Engineer",
+    "Full-Stack Engineer",
+    "Platform / Infrastructure Engineer",
+    "Site Reliability Engineer (SRE)",
+    "Data Engineer",
+    "ML Engineer",
+    "DevOps Engineer",
+    "Other (type your own)",
+]
 
-def _input(prompt: str, default: str = "") -> str:
-    if not sys.stdin.isatty():
-        return default
-    suffix = f" [{default}]" if default else ""
-    try:
-        ans = input(f"{prompt}{suffix}: ").strip()
-    except EOFError:
-        return default
-    return ans if ans else default
+LEVEL_OPTIONS = [
+    "Mid-level",
+    "Senior",
+    "Staff",
+    "Sr Staff",
+    "Principal",
+    "Distinguished",
+]
 
+DOMAIN_OPTIONS = [
+    "AI/ML",
+    "Developer tools",
+    "Cloud infrastructure",
+    "Enterprise SaaS",
+    "Fintech",
+    "Healthcare / biotech",
+    "Climate tech",
+    "Cybersecurity",
+    "Edtech",
+    "E-commerce / marketplace",
+    "Other (type your own)",
+]
 
-def _input_list(prompt: str, current: list[str]) -> list[str]:
-    """Prompt for a comma-separated list, showing *current* as the default."""
-    default_display = ", ".join(current) if current else ""
-    raw = _input(prompt + " (comma-separated)", default_display)
-    if not raw:
-        return current
-    return [item.strip() for item in raw.split(",") if item.strip()]
+GEO_OPTIONS = [
+    "Remote-first",
+    "Hybrid",
+    "Onsite",
+    "Anywhere US",
+    "NYC",
+    "SF Bay Area",
+    "Seattle",
+    "Austin",
+    "London",
+    "Other (type your own)",
+]
 
-
-def _input_optional(prompt: str, default: str = "") -> str:
-    return _input(prompt + " (optional, press Enter to skip)", default)
-
+EXCLUSION_OPTIONS = [
+    "Crypto / web3",
+    "Defense / military",
+    "Gambling",
+    "Pre-seed / very early",
+    "Tobacco / vaping",
+    "None",
+    "Other (type your own)",
+]
 
 # ---------------------------------------------------------------------------
 # settings.yaml line-level read / write (no PyYAML dependency)
@@ -101,7 +146,6 @@ def _write_list(lines: list[str], key: str, values: list[str]) -> list[str]:
     indent = re.match(r"^(\s*)", lines[idx]).group(1)  # type: ignore[union-attr]
     item_indent = indent + "    "
 
-    # Find extent of old list (items + comments after the key line)
     old_start = idx + 1
     old_end = old_start
     while old_end < len(lines):
@@ -187,6 +231,7 @@ def handle_personalize(
     workspace: Path | None = None,
     data_home: Path | None = None,
     yes: bool = False,
+    show_header: bool = True,
 ) -> int:
     """Run the interactive Tier-0 personalization flow.
 
@@ -212,23 +257,31 @@ def handle_personalize(
     cur_excl = _read_yaml_list_values(lines, "exclusions")
 
     if yes:
-        print("Personalization: non-interactive mode — using existing config values.")
+        info("Non-interactive mode — using existing config values.")
         _print_summary(settings_path, thesis_path, cur_role, cur_level, cur_domains)
         return 0
 
-    print("")
-    print("Personalize your toolkit")
-    print("========================")
-    print("These answers feed into target-list-generator, opportunity-evaluator,")
-    print("and other skills so they tailor output to your search.")
-    print("")
+    if show_header:
+        header("Personalize your toolkit")
+        print(f"  {dim('These answers feed into target-list-generator, opportunity-evaluator,')}")
+        print(f"  {dim('and other skills so they tailor output to your search.')}")
+        blank()
 
     # --- Collect inputs ---
-    new_role = _input("Target role", cur_role or "Software Engineer")
-    new_level = _input("Seniority level", cur_level or "Senior")
-    new_domains = _input_list("Target domains", cur_domains)
-    new_geo = _input_list("Geo / remote preferences", cur_geo)
-    new_excl = _input_list("Exclusions", cur_excl)
+    new_role = pick_one("Target role", ROLE_OPTIONS, default=cur_role or None)
+    blank()
+
+    new_level = pick_one("Seniority level", LEVEL_OPTIONS, default=cur_level or None)
+    blank()
+
+    new_domains = pick_many("Target domains", list(DOMAIN_OPTIONS), current=cur_domains or None)
+    blank()
+
+    new_geo = pick_many("Geo / remote preferences", list(GEO_OPTIONS), current=cur_geo or None)
+    blank()
+
+    new_excl = pick_many("Exclusions", list(EXCLUSION_OPTIONS), current=cur_excl or None)
+    blank()
 
     # --- Write settings.yaml ---
     if new_role:
@@ -244,15 +297,30 @@ def handle_personalize(
 
     settings_path.parent.mkdir(parents=True, exist_ok=True)
     settings_path.write_text("".join(lines))
+    success("Settings saved")
 
     # --- Seed role-thesis if still template ---
     if _thesis_is_template(thesis_path):
-        print("")
-        print(f"Your role thesis ({thesis_path}):")
-        print("This file drives opportunity-evaluator and career-guide recommendations.")
-        print("")
-        must_haves = _input_optional("Must-haves (comp floor, scope, location — 1-2 sentences)")
-        non_neg = _input_optional("Non-negotiables (culture or role dealbreakers)")
+        blank()
+        must_haves = ask_freetext(
+            "Role Thesis — Must-Haves",
+            hint="These go into your role thesis and are used by opportunity-evaluator for quick-filter scoring.",
+            examples=[
+                '"$250K+ total comp, remote-first, domain ownership not feature work"',
+                '"IC track with Staff+ progression, Series C+ or public"',
+            ],
+        )
+        blank()
+
+        non_neg = ask_freetext(
+            "Role Thesis — Non-Negotiables",
+            hint="Dealbreakers that should auto-reject an opportunity.",
+            examples=[
+                "\"No 'move fast and break things' without reliability investment\"",
+                '"IC track only — not a management role disguised as IC"',
+            ],
+        )
+
         if must_haves or non_neg:
             template_src = workspace / "templates" / "role-thesis.md"
             if thesis_path.is_file():
@@ -267,9 +335,11 @@ def handle_personalize(
                 text = _seed_thesis_section(text, "Non-Negotiables", non_neg)
             thesis_path.parent.mkdir(parents=True, exist_ok=True)
             thesis_path.write_text(text)
+            success("Role thesis updated")
+        else:
+            info(f"You can fill in your role thesis later: {thesis_path}")
     else:
-        print("")
-        print(f"Role thesis already has content: {thesis_path}")
+        info(f"Role thesis already has content: {thesis_path}")
 
     _print_summary(settings_path, thesis_path, new_role, new_level, new_domains)
     return 0
@@ -282,15 +352,15 @@ def _print_summary(
     level: str,
     domains: list[str],
 ) -> None:
-    print("")
-    print("Personalization saved.")
-    print(f"  settings.yaml:  {settings_path}")
-    print(f"  role-thesis.md: {thesis_path}")
-    print("")
+    blank()
+    print(f"  {bold('Personalization saved.')}")
+    print(f"        {dim('settings.yaml:')}  {settings_path}")
+    print(f"        {dim('role-thesis.md:')} {thesis_path}")
+    blank()
     if domains and role and level:
         domain_str = " and ".join(domains[:2])
         if len(domains) > 2:
             domain_str += f" (+{len(domains) - 2} more)"
-        print("Your first useful prompt (paste into your AI agent):")
-        print(f'  "Build me a target company list for {domain_str} {level} {role} roles"')
-        print("")
+        print(f"  {dim('Your first useful prompt (paste into your AI agent):')}")
+        print(f"  {bold(f'Build me a target company list for {domain_str} {level} {role} roles')}")
+        blank()

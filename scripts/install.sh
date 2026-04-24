@@ -6,28 +6,34 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(dirname "$SCRIPT_DIR")"
 DRY_RUN=0
 PLATFORM=""
+SCOPE=""
 
 usage() {
-  echo "Usage: $(basename "$0") [--platform cursor|claude-code] [--dry-run]"
+  echo "Usage: $(basename "$0") [--platform cursor|claude-code] [--scope local|global] [--dry-run]"
   echo ""
   echo "Install skills, agents, and rules into your AI agent platform."
   echo ""
   echo "Options:"
   echo "  --platform PLATFORM  Target platform: cursor, claude-code (default: auto-detect)"
+  echo "  --scope SCOPE        Install scope: local (workspace .cursor/) or global (~/.cursor/)"
+  echo "                       Default: local for cursor, always local for claude-code"
   echo "  --dry-run            Print what would be copied without writing"
   echo "  --help               Show this help"
   echo ""
   echo "Platforms:"
-  echo "  cursor       Copies skills, agents, and rules to ~/.cursor/{skills,agents,rules}/"
-  echo "  claude-code  Copies skills, agents, and rules to .claude/{skills,agents,rules}/"
-  echo "               (paths are relative to the current working directory — cd to your"
-  echo "               job-search project first, then run this script with an absolute path)"
+  echo "  cursor       local:  .cursor/{skills,agents,rules}/ in the current directory"
+  echo "               global: ~/.cursor/{skills,agents,rules}/"
+  echo "  claude-code  Always local: .claude/{skills,agents,rules}/"
 }
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --platform)
       PLATFORM="$2"
+      shift
+      ;;
+    --scope)
+      SCOPE="$2"
       shift
       ;;
     --dry-run) DRY_RUN=1 ;;
@@ -57,11 +63,22 @@ if [[ -z "$PLATFORM" ]]; then
   echo "Auto-detected platform: $PLATFORM"
 fi
 
+# Default scope: local for both platforms
+if [[ -z "$SCOPE" ]]; then
+  SCOPE="local"
+fi
+
 case "$PLATFORM" in
   cursor)
-    SKILLS_DEST="${HOME}/.cursor/skills"
-    AGENTS_DEST="${HOME}/.cursor/agents"
-    RULES_DEST="${HOME}/.cursor/rules"
+    if [[ "$SCOPE" == "global" ]]; then
+      SKILLS_DEST="${HOME}/.cursor/skills"
+      AGENTS_DEST="${HOME}/.cursor/agents"
+      RULES_DEST="${HOME}/.cursor/rules"
+    else
+      SKILLS_DEST=".cursor/skills"
+      AGENTS_DEST=".cursor/agents"
+      RULES_DEST=".cursor/rules"
+    fi
     ;;
   claude-code)
     SKILLS_DEST=".claude/skills"
@@ -104,7 +121,7 @@ copy_dir() {
 }
 
 echo ""
-echo "Installing ai-career-toolkit → $PLATFORM"
+echo "Installing ai-career-toolkit → $PLATFORM ($SCOPE)"
 echo ""
 
 echo "Skills:"
@@ -143,8 +160,12 @@ else
   echo ""
   if [[ "$PLATFORM" == "cursor" ]]; then
     echo "Restart Cursor or reload the window if skills/agents/rules don't appear immediately."
-    echo "Rules were copied to ~/.cursor/rules/ (global). For project-only rules, copy rules/*.mdc"
-    echo "into that project's .cursor/rules/ instead — see docs/platforms/cursor.md."
+    if [[ "$SCOPE" == "global" ]]; then
+      echo "Installed globally to ~/.cursor/. For workspace-only install, re-run with --scope local."
+    else
+      echo "Installed to .cursor/ in the current directory (workspace-local)."
+      echo "For global install (~/.cursor/), re-run with --scope global."
+    fi
   elif [[ "$PLATFORM" == "claude-code" ]]; then
     echo "Skills, agents, and rules are installed under .claude/ in the current directory."
     echo "Start a new Claude Code session to pick them up."

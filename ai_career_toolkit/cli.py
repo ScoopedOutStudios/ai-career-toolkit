@@ -81,6 +81,12 @@ def _build_parser() -> argparse.ArgumentParser:
         required=True,
     )
     p_inst.add_argument(
+        "--scope",
+        choices=("local", "global"),
+        default="local",
+        help="Install scope: local (workspace .cursor/) or global (~/.cursor/). Default: local",
+    )
+    p_inst.add_argument(
         "--workspace",
         type=Path,
         default=None,

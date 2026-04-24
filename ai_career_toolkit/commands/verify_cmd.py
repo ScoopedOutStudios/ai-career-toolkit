@@ -201,8 +201,8 @@ def run_verify(*, platform: str, workspace: Path | None, output_format: str) -> 
                 Check(
                     "toolkit_root",
                     False,
-                    f"Not a toolkit directory: {w}",
-                    "Pass a path with skills/, agents/, scripts/ or run init.",
+                    f"Toolkit files not found at {w} (expected skills/, agents/, scripts/ inside)",
+                    "Run `ai-career-toolkit init` to set up, or cd into your toolkit directory.",
                 )
             )
             return _emit(results, output_format, critical=True)
@@ -215,7 +215,7 @@ def run_verify(*, platform: str, workspace: Path | None, output_format: str) -> 
                     "toolkit_root",
                     False,
                     str(e),
-                    "Run `ai-career-toolkit init` or set AI_CAREER_TOOLKIT_ROOT.",
+                    "Run `ai-career-toolkit init` to set up your toolkit.",
                 )
             )
             return _emit(results, output_format, critical=True)
@@ -316,19 +316,21 @@ def run_verify(*, platform: str, workspace: Path | None, output_format: str) -> 
 
 
 def _emit(results: list[Check], output_format: str, *, critical: bool) -> int:
+    from ai_career_toolkit.ui import bold, green, red, yellow
+
     if output_format == "json":
         print(json.dumps([c.__dict__ for c in results], indent=2))
     else:
         for c in results:
             if c.ok:
-                label = "ok"
+                label = green("[  ok]")
             elif c.level == "warn":
-                label = "warn"
+                label = yellow("[warn]")
             else:
-                label = "gap"
-            print(f"[{label:>4}] {c.id}: {c.detail}")
+                label = red("[ gap]")
+            print(f"        {label} {c.id}: {c.detail}")
             if not c.ok and c.fix:
-                print(f"        fix: {c.fix}")
+                print(f"               fix: {c.fix}")
         if not critical:
             warns = sum(1 for c in results if not c.ok and c.level == "warn")
             passed = sum(1 for c in results if c.ok)
@@ -336,7 +338,7 @@ def _emit(results: list[Check], output_format: str, *, critical: bool) -> int:
             if warns:
                 parts.append(f"{warns} warning{'s' if warns != 1 else ''}")
             print("")
-            print(f"Summary: {', '.join(parts)}.")
+            print(f"        {bold('Summary:')} {', '.join(parts)}.")
     if critical:
         return 2
     if any(not c.ok and c.level == "error" for c in results):
