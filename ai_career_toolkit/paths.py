@@ -18,7 +18,10 @@ def default_data_home() -> Path:
 
 def is_toolkit_root(path: Path) -> bool:
     p = path.resolve()
-    return all((p / name).is_dir() for name in _MARKERS) and (p / "skills" / "opportunity-evaluator" / "SKILL.md").is_file()
+    return (
+        all((p / name).is_dir() for name in _MARKERS)
+        and (p / "skills" / "opportunity-evaluator" / "SKILL.md").is_file()
+    )
 
 
 def package_dir() -> Path:
@@ -54,9 +57,7 @@ def resolve_toolkit_root(*, env_only: bool = False) -> Path:
         p = Path(env).expanduser().resolve()
         if is_toolkit_root(p):
             return p
-        raise FileNotFoundError(
-            f"AI_CAREER_TOOLKIT_ROOT is set but does not look like a toolkit tree: {p}"
-        )
+        raise FileNotFoundError(f"AI_CAREER_TOOLKIT_ROOT is set but does not look like a toolkit tree: {p}")
 
     if not env_only:
         here = Path.cwd().resolve()

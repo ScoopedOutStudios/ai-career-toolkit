@@ -40,6 +40,12 @@ def _build_parser() -> argparse.ArgumentParser:
         default=None,
         help="Override personal data directory (default: ~/.ai-career-toolkit or AI_CAREER_TOOLKIT_HOME)",
     )
+    p_init.add_argument(
+        "--platform",
+        choices=("cursor", "claude-code"),
+        default=None,
+        help="Target platform to install into (default: auto-detect or ask interactively)",
+    )
 
     p_verify = sub.add_parser(
         "verify",
@@ -81,6 +87,23 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Toolkit root containing scripts/install.sh",
     )
 
+    p_pers = sub.add_parser(
+        "personalize",
+        help="Set targeting criteria (role, level, domains) and seed role-thesis",
+    )
+    p_pers.add_argument(
+        "--workspace",
+        type=Path,
+        default=None,
+        help="Toolkit root containing config/settings.yaml",
+    )
+    p_pers.add_argument(
+        "--data-home",
+        type=Path,
+        default=None,
+        help="Personal data directory containing role-thesis.md",
+    )
+
     return parser
 
 
@@ -105,6 +128,13 @@ def main() -> int:
             from ai_career_toolkit.commands.init_cmd import handle_install
 
             return handle_install(args)
+        if args.command == "personalize":
+            from ai_career_toolkit.commands.personalize_cmd import handle_personalize
+
+            return handle_personalize(
+                workspace=Path(args.workspace).expanduser().resolve() if args.workspace else None,
+                data_home=Path(args.data_home).expanduser().resolve() if args.data_home else None,
+            )
     except KeyboardInterrupt:
         return 130
     except (RuntimeError, FileNotFoundError, ValueError) as exc:

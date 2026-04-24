@@ -2,8 +2,6 @@
 
 ## Summary
 
-<!-- Replace with your own voice summary after analyzing your writing samples. -->
-
 Direct, technically precise, warm without being casual. Prefers short sentences and active constructions. Leads with outcomes, follows with method. Avoids jargon inflation and hedging language.
 
 ## Sentence Patterns
@@ -15,12 +13,14 @@ Direct, technically precise, warm without being casual. Prefers short sentences 
 
 ## Vocabulary Preferences
 
-| Prefer | Avoid |
-|--------|-------|
-| built, designed, led | leveraged, synergized, spearheaded |
-| improved, reduced, shipped | was instrumental in, played a key role |
-| decided, chose, prioritized | was tasked with, was given the opportunity |
+
+| Prefer                        | Avoid                                       |
+| ----------------------------- | ------------------------------------------- |
+| built, designed, led          | leveraged, synergized, spearheaded          |
+| improved, reduced, shipped    | was instrumental in, played a key role      |
+| decided, chose, prioritized   | was tasked with, was given the opportunity  |
 | team, engineers, stakeholders | cross-functional partners, key stakeholders |
+
 
 ## Energy Level
 

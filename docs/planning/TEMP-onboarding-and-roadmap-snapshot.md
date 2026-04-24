@@ -16,12 +16,14 @@
 
 ## 2. Proposed onboarding shape (simplified)
 
-| Layer | User outcome | Primary artifacts (proposed) |
-| ----- | ------------ | ---------------------------- |
-| **Orient** | Understand what this is / is not | Short README lead; link **Playbook** |
-| **Setup** | IDE + files on disk | Collapsed “Setup” page: Path A (pip/CLI) vs Path B (git/bash); `verify` optional |
-| **Personalize** | Outputs are about *them* | **Tier 0 checklist** (see §4) + links to `settings.yaml` + `role-thesis.md` |
-| **First win** | One useful artifact today | One **copy-paste prompt** for JD eval *or* target list (Playbook §) |
+
+| Layer           | User outcome                     | Primary artifacts (proposed)                                                     |
+| --------------- | -------------------------------- | -------------------------------------------------------------------------------- |
+| **Orient**      | Understand what this is / is not | Short README lead; link **Playbook**                                             |
+| **Setup**       | IDE + files on disk              | Collapsed “Setup” page: Path A (pip/CLI) vs Path B (git/bash); `verify` optional |
+| **Personalize** | Outputs are about *them*         | **Tier 0 checklist** (see §4) + links to `settings.yaml` + `role-thesis.md`      |
+| **First win**   | One useful artifact today        | One **copy-paste prompt** for JD eval *or* target list (Playbook §)              |
+
 
 **Principle:** `init` / `install` / `verify` stay; they are **not** positioned as the product value.
 
@@ -44,21 +46,25 @@ Single user-facing doc, e.g. `docs/playbook.md`, containing:
 
 ### Tier 0 — Minimum viable context (~15 min)
 
-| Input | Location | Why |
-| ----- | -------- | --- |
-| Level + track (IC) | `settings.yaml` + thesis | Rubric / JD alignment |
-| Domains | `settings.yaml` `targeting.domains` | Lists + research |
-| Remote/geo + rough comp floor | Thesis must-haves | Filters |
-| Exclusions | Thesis + `settings.yaml` | Noise reduction |
+
+| Input                         | Location                            | Why                   |
+| ----------------------------- | ----------------------------------- | --------------------- |
+| Level + track (IC)            | `settings.yaml` + thesis            | Rubric / JD alignment |
+| Domains                       | `settings.yaml` `targeting.domains` | Lists + research      |
+| Remote/geo + rough comp floor | Thesis must-haves                   | Filters               |
+| Exclusions                    | Thesis + `settings.yaml`            | Noise reduction       |
+
 
 ### Tier 1 — Strong personalization
 
-| Input | Location | Why |
-| ----- | -------- | --- |
+
+| Input            | Location                              | Why                         |
+| ---------------- | ------------------------------------- | --------------------------- |
 | Full role thesis | `~/.ai-career-toolkit/role-thesis.md` | Evaluator, career narrative |
-| Voice pack | `voice-pack` | Outreach, `in-my-voice` |
-| Story bank | Templates + notes | STAR + mocks |
-| Target TSV | `target-companies.tsv` | Pipeline |
+| Voice pack       | `voice-pack`                          | Outreach, `in-my-voice`     |
+| Story bank       | Templates + notes                     | STAR + mocks                |
+| Target TSV       | `target-companies.tsv`                | Pipeline                    |
+
 
 ### Tier 2 — Ongoing
 
@@ -68,12 +74,14 @@ Opportunity notes, weekly reviews, offer tradeoffs (`career-guide`).
 
 ## 5. Phased execution (this initiative)
 
-| Phase | Deliverable |
-| ----- | ----------- |
+
+| Phase  | Deliverable                                                                                        |
+| ------ | -------------------------------------------------------------------------------------------------- |
 | **P1** | `docs/playbook.md` + slim `docs/GETTING_STARTED.md` (orient + Tier 0 + link playbook + link setup) |
-| **P2** | README restructure (value first, setup second) |
-| **P3** | Optional CLI bridge: post-`verify` hint or `onboarding` subcommand printing Tier 0 + first prompt |
-| **P4** | Sanitized example session (transcript or doc) |
+| **P2** | README restructure (value first, setup second)                                                     |
+| **P3** | Optional CLI bridge: post-`verify` hint or `onboarding` subcommand printing Tier 0 + first prompt  |
+| **P4** | Sanitized example session (transcript or doc)                                                      |
+
 
 ---
 
@@ -81,13 +89,15 @@ Opportunity notes, weekly reviews, offer tradeoffs (`career-guide`).
 
 Sourced from [README.md](../../README.md) and public issue links. **Verify in GitHub** for current state.
 
-| Item | Type | Notes |
-| ---- | ---- | ----- |
-| **Non-tech roles expansion** | GitHub issue | [Issue #1](https://github.com/ScoopedOutStudios/ai-career-toolkit/issues/1) — sales, marketing, product, design, ops; v1 explicitly **out of scope** |
-| **Marketplace publishing** | Roadmap / README | “Planned for future releases” (Cursor, Claude Code, Codex) — **not started** |
-| **Manager / EM-first tracks** | Scope | README: not first-class; IC-calibrated — **content gap** if EM audience grows |
-| **Hosted CRM / ATS / scoring automation** | Non-goal | Launch plan: no `score_companies.py`-style pipeline in v1 — **deferred** unless demand |
-| **“Other” Agent Skills hosts** | Doc gap | README: compatible in principle; **no** first-class guide for ChatGPT-only / Gemini-only users |
+
+| Item                                      | Type             | Notes                                                                                                                                                |
+| ----------------------------------------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Non-tech roles expansion**              | GitHub issue     | [Issue #1](https://github.com/ScoopedOutStudios/ai-career-toolkit/issues/1) — sales, marketing, product, design, ops; v1 explicitly **out of scope** |
+| **Marketplace publishing**                | Roadmap / README | “Planned for future releases” (Cursor, Claude Code, Codex) — **not started**                                                                         |
+| **Manager / EM-first tracks**             | Scope            | README: not first-class; IC-calibrated — **content gap** if EM audience grows                                                                        |
+| **Hosted CRM / ATS / scoring automation** | Non-goal         | Launch plan: no `score_companies.py`-style pipeline in v1 — **deferred** unless demand                                                               |
+| **“Other” Agent Skills hosts**            | Doc gap          | README: compatible in principle; **no** first-class guide for ChatGPT-only / Gemini-only users                                                       |
+
 
 ---
 
@@ -107,12 +117,14 @@ These live under the maintainer’s Cursor plans directory, not in this repo. Ti
 - **Note:** Frontmatter shows many todos as `pending` / `in_progress`; the **repository has since shipped** most of this (skills, agents including `research-guru`, setup/install, docs, company-list pipeline doc, Python CLI). Treat frontmatter as **historical**, not source of truth.
 - **Items that may still be genuinely open or need verification:**
 
-| Original todo (paraphrased) | Likely status | Action |
-| --------------------------- | ------------- | ------ |
-| Generalize rubric to multi-track (IC, EM, Staff+, Principal) | **Partial** | Template exists; EM track not first-class in README |
-| `cleanup-family-hq` — remove `tools/cursor-career-stack/`, point README to new repo | **Unknown** | Verify in `family-hq` repo |
-| Pre-commit / grep for PII patterns | **Not in OSS repo** | Optional hygiene backlog |
-| `verify-install` fresh-clone test | **Ongoing** | Keep in release checklist |
+
+| Original todo (paraphrased)                                                         | Likely status       | Action                                              |
+| ----------------------------------------------------------------------------------- | ------------------- | --------------------------------------------------- |
+| Generalize rubric to multi-track (IC, EM, Staff+, Principal)                        | **Partial**         | Template exists; EM track not first-class in README |
+| `cleanup-family-hq` — remove `tools/cursor-career-stack/`, point README to new repo | **Unknown**         | Verify in `family-hq` repo                          |
+| Pre-commit / grep for PII patterns                                                  | **Not in OSS repo** | Optional hygiene backlog                            |
+| `verify-install` fresh-clone test                                                   | **Ongoing**         | Keep in release checklist                           |
+
 
 ---
 
@@ -135,6 +147,7 @@ These live under the maintainer’s Cursor plans directory, not in this repo. Ti
 
 ## Document history
 
-| Date | Change |
-| ---- | ------ |
+
+| Date       | Change                                                                                                           |
+| ---------- | ---------------------------------------------------------------------------------------------------------------- |
 | 2026-04-20 | Initial snapshot: onboarding plan + backlog inventory from README, launch plan, repo setup plan, recent UX notes |

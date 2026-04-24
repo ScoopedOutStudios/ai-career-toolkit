@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 import json
+import re
 import shutil
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 from ai_career_toolkit.paths import (
@@ -22,6 +23,7 @@ class Check:
     ok: bool
     detail: str
     fix: str
+    level: str = field(default="error")  # "error" | "warn"
 
 
 def _bash_available() -> bool:
@@ -62,6 +64,130 @@ def _check_claude_cwd() -> Check:
     )
 
 
+# ---------------------------------------------------------------------------
+# Personalization checks (warn level — don't fail, but surface gaps)
+# ---------------------------------------------------------------------------
+
+
+def _check_personalization_domains(settings: Path) -> Check:
+    """Warn if settings.yaml has no uncommented domains."""
+    if not settings.is_file():
+        return Check(
+            "personalization_domains",
+            False,
+            "No settings.yaml found",
+            "Run `ai-career-toolkit init`.",
+            level="warn",
+        )
+    text = settings.read_text()
+    in_domains = False
+    for line in text.splitlines():
+        stripped = line.strip()
+        if re.match(r"^\s*domains\s*:", line):
+            in_domains = True
+            continue
+        if in_domains:
+            if stripped.startswith("- ") and not stripped.startswith("# "):
+                return Check(
+                    "personalization_domains",
+                    True,
+                    "Targeting domains configured.",
+                    "",
+                    level="warn",
+                )
+            if stripped and not stripped.startswith("#") and not stripped.startswith("- "):
+                break
+    return Check(
+        "personalization_domains",
+        False,
+        "No targeting domains configured",
+        "Run `ai-career-toolkit personalize` or uncomment domains in config/settings.yaml.",
+        level="warn",
+    )
+
+
+def _check_personalization_role(settings: Path) -> Check:
+    """Warn if role or level are empty / commented out."""
+    if not settings.is_file():
+        return Check(
+            "personalization_role",
+            False,
+            "No settings.yaml found",
+            "Run `ai-career-toolkit init`.",
+            level="warn",
+        )
+    text = settings.read_text()
+    has_role = False
+    has_level = False
+    for line in text.splitlines():
+        m_role = re.match(r"^\s*role\s*:\s*(.+)$", line)
+        if m_role and not m_role.group(1).strip().startswith("#"):
+            has_role = bool(m_role.group(1).strip())
+        m_level = re.match(r"^\s*level\s*:\s*(.+)$", line)
+        if m_level and not m_level.group(1).strip().startswith("#"):
+            has_level = bool(m_level.group(1).strip())
+    if has_role and has_level:
+        return Check(
+            "personalization_role",
+            True,
+            "Role and level configured.",
+            "",
+            level="warn",
+        )
+    missing = []
+    if not has_role:
+        missing.append("role")
+    if not has_level:
+        missing.append("level")
+    return Check(
+        "personalization_role",
+        False,
+        f"Missing targeting fields: {', '.join(missing)}",
+        "Run `ai-career-toolkit personalize` or edit config/settings.yaml.",
+        level="warn",
+    )
+
+
+def _check_personalization_thesis(thesis: Path) -> Check:
+    """Warn if role-thesis still contains only template placeholder markers."""
+    if not thesis.is_file():
+        return Check(
+            "personalization_thesis",
+            False,
+            "role-thesis.md not found",
+            "Run `ai-career-toolkit init` to create it.",
+            level="warn",
+        )
+    text = thesis.read_text()
+    if "<!-- e.g.," in text or "<!-- " in text:
+        without_placeholders = re.sub(r"<!--.*?-->", "", text)
+        meaningful = [
+            ln.strip()
+            for ln in without_placeholders.splitlines()
+            if ln.strip() and not ln.strip().startswith(("#", ">", "-", "**", "Use this", "Define your", "Score:"))
+        ]
+        if len(meaningful) < 5:
+            return Check(
+                "personalization_thesis",
+                False,
+                "role-thesis.md still contains template placeholders",
+                "Run `ai-career-toolkit personalize` or edit ~/.ai-career-toolkit/role-thesis.md.",
+                level="warn",
+            )
+    return Check(
+        "personalization_thesis",
+        True,
+        "role-thesis.md has content.",
+        "",
+        level="warn",
+    )
+
+
+# ---------------------------------------------------------------------------
+# Main verify logic
+# ---------------------------------------------------------------------------
+
+
 def run_verify(*, platform: str, workspace: Path | None, output_format: str) -> int:
     results: list[Check] = []
 
@@ -94,7 +220,8 @@ def run_verify(*, platform: str, workspace: Path | None, output_format: str) -> 
             )
             return _emit(results, output_format, critical=True)
 
-    assert root is not None
+    if root is None:
+        raise RuntimeError("Toolkit root resolved to None unexpectedly.")
     results.append(Check("toolkit_root", True, str(root), ""))
 
     if not (root / "scripts" / "install.sh").is_file():
@@ -109,7 +236,6 @@ def run_verify(*, platform: str, workspace: Path | None, output_format: str) -> 
     else:
         results.append(Check("install_script", True, "scripts/install.sh present", ""))
 
-    # Python packaging modes
     if bundled_root() is not None:
         results.append(Check("bundle", True, "Running from pip wheel bundle.", ""))
     elif editable_repo_root() is not None:
@@ -124,7 +250,6 @@ def run_verify(*, platform: str, workspace: Path | None, output_format: str) -> 
             )
         )
 
-    # Bash (for install.sh)
     if _bash_available():
         results.append(Check("bash", True, shutil.which("bash") or "bash", ""))
     else:
@@ -137,7 +262,6 @@ def run_verify(*, platform: str, workspace: Path | None, output_format: str) -> 
             )
         )
 
-    # Config scaffold
     cfg = root / "config"
     settings = cfg / "settings.yaml"
     if settings.is_file():
@@ -152,7 +276,6 @@ def run_verify(*, platform: str, workspace: Path | None, output_format: str) -> 
             )
         )
 
-    # Personal data home
     data = default_data_home()
     if data.is_dir():
         results.append(Check("data_home", True, str(data), ""))
@@ -179,6 +302,11 @@ def run_verify(*, platform: str, workspace: Path | None, output_format: str) -> 
             )
         )
 
+    # Personalization checks (warn level)
+    results.append(_check_personalization_domains(settings))
+    results.append(_check_personalization_role(settings))
+    results.append(_check_personalization_thesis(role))
+
     if platform in ("cursor", "both"):
         results.append(_check_cursor_install())
     if platform in ("claude-code", "both"):
@@ -192,14 +320,25 @@ def _emit(results: list[Check], output_format: str, *, critical: bool) -> int:
         print(json.dumps([c.__dict__ for c in results], indent=2))
     else:
         for c in results:
-            status = "ok" if c.ok else "gap"
-            print(f"[{status}] {c.id}: {c.detail}")
+            if c.ok:
+                label = "ok"
+            elif c.level == "warn":
+                label = "warn"
+            else:
+                label = "gap"
+            print(f"[{label:>4}] {c.id}: {c.detail}")
             if not c.ok and c.fix:
                 print(f"        fix: {c.fix}")
         if not critical:
-            gaps = sum(1 for c in results if not c.ok)
+            warns = sum(1 for c in results if not c.ok and c.level == "warn")
+            passed = sum(1 for c in results if c.ok)
+            parts = [f"{passed}/{len(results)} checks passed"]
+            if warns:
+                parts.append(f"{warns} warning{'s' if warns != 1 else ''}")
             print("")
-            print(f"Summary: {len(results) - gaps}/{len(results)} checks passed.")
+            print(f"Summary: {', '.join(parts)}.")
     if critical:
         return 2
-    return 1 if any(not c.ok for c in results) else 0
+    if any(not c.ok and c.level == "error" for c in results):
+        return 1
+    return 0

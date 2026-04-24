@@ -5,6 +5,9 @@
 # It is NOT consumed by setup.sh or install.sh — those scripts work
 # independently. Think of this as your "profile" that skills like
 # target-list-generator and opportunity-evaluator reference.
+#
+# TIP: Run `ai-career-toolkit init` to fill these fields interactively,
+# or `ai-career-toolkit personalize` to update them later.
 
 # Which AI platform you're using (for agent reference, not used by scripts)
 # Supported: cursor, claude-code
@@ -13,6 +16,10 @@ platform: cursor
 # Target company list generation parameters
 targeting:
   domains:
+    # Used by: target-list-generator, research-guru, opportunity-evaluator
+    # If empty: target-list-generator will ask you interactively each time;
+    #           opportunity-evaluator skips domain-fit scoring.
+    # Examples (uncomment the ones that fit):
     # - AI/ML
     # - developer tools
     # - climate tech
@@ -23,21 +30,27 @@ targeting:
     # - edtech
     # - infrastructure
   company_stages:
+    # Used by: target-list-generator
+    # If empty: all stages are considered; no filtering applied.
     # - early-stage
     # - growth-stage
     # - late-stage
     # - public-scale
     # - nonprofit
 
-  # Role: technical IC track (v1 kit is optimized for these)
-  # Examples: Software Engineer, Site Reliability Engineer, Data Engineer, ML Engineer
-  role: Software Engineer
+  # Used by: target-list-generator, opportunity-evaluator, hm-review
+  # Controls which rubric dimensions and JD signals are prioritized.
+  # If missing: skills default to generic "Software Engineer" context.
+  role: # e.g., Software Engineer, Site Reliability Engineer, ML Engineer
 
-  # Level: seniority within the IC track
-  # Examples: Mid-level, Senior, Staff, Sr Staff, Principal, Distinguished
-  level: Staff
+  # Used by: opportunity-evaluator (level-match check), hm-review (calibration),
+  #          mock-interview-loop (question difficulty), career-guide (trajectory)
+  # If missing: skills cannot calibrate for seniority — feedback will be generic.
+  level: # e.g., Senior, Staff, Sr Staff, Principal
 
   geo_remote:
+    # Used by: target-list-generator (location filtering), opportunity-evaluator (fit check)
+    # If empty: no location filtering; all geographies considered.
     # - remote-first
     # - hybrid
     # - onsite
@@ -48,6 +61,8 @@ targeting:
     # - London
     # - anywhere-US
   exclusions:
+    # Used by: target-list-generator (hard filter), opportunity-evaluator (quick-reject)
+    # If empty: nothing excluded; all companies considered.
     # - crypto
     # - defense
     # - pre-seed
