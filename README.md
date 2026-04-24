@@ -37,7 +37,7 @@ pipx install git+https://github.com/ScoopedOutStudios/ai-career-toolkit.git
 ai-career-toolkit init
 ```
 
-`init` walks you through everything: workspace setup, personalization (role, level, domains, must-haves), platform install (Cursor / Claude Code), and verification. Re-running `init` is safe — it skips completed steps and fills in anything missing.
+`init` walks you through everything: personalization (interactive menus for role, level, domains, must-haves), platform install (Cursor / Claude Code with local or global scope), and verification. Re-running `init` is safe — it skips completed steps and fills in anything missing.
 
 ### Path B — git clone + bash
 
@@ -62,15 +62,15 @@ Open your AI agent and talk naturally:
 
 The agent discovers and invokes the right skills automatically. For more prompts, see the [Playbook](docs/playbook.md).
 
-After you pull updates, re-run `ai-career-toolkit install --platform <name>` so skills, agents, and rules stay in sync.
+After you pull updates, re-run `ai-career-toolkit install --platform <name>` so skills, agents, and rules stay in sync. By default, Cursor installs go to `.cursor/` in your current directory (workspace-local); pass `--scope global` to install to `~/.cursor/` instead.
 
 ### CLI commands
 
 | Command | When to use | What it does |
 |---------|-------------|--------------|
 | `init` | First time, or to fill gaps | Full flow: scaffold + personalize + install + verify + first prompt |
-| `personalize` | Changing targets mid-search | Re-collects targeting criteria, rewrites config files |
-| `install --platform X` | After `git pull` | Re-copies skills/agents/rules to your platform |
+| `personalize` | Changing targets mid-search | Interactive menus for role, level, domains, geo, exclusions; seeds role thesis |
+| `install --platform X [--scope local\|global]` | After `git pull` | Re-copies skills/agents/rules to your platform (default: workspace-local) |
 | `verify` | Anytime, diagnostics | Checks layout, config, personalization, and platform install |
 
 ### If something goes wrong
@@ -142,11 +142,11 @@ A tool-agnostic methodology for running a disciplined job search:
 ## Platform Support
 
 
-| Platform    | Status     | Install Method                                                                  |
-| ----------- | ---------- | ------------------------------------------------------------------------------- |
-| Cursor      | Supported  | `ai-career-toolkit init --platform cursor` or `./scripts/install.sh --platform cursor` |
-| Claude Code | Supported  | `ai-career-toolkit init --platform claude-code` or `./scripts/install.sh --platform claude-code` |
-| Others      | Compatible | Skills use standard Agent Skills format; see [platform guides](docs/platforms/) |
+| Platform    | Status     | Install Method | Default scope |
+| ----------- | ---------- | -------------- | ------------- |
+| Cursor      | Supported  | `ai-career-toolkit init --platform cursor` or `./scripts/install.sh --platform cursor` | Workspace-local (`.cursor/`). Pass `--scope global` for `~/.cursor/` |
+| Claude Code | Supported  | `ai-career-toolkit init --platform claude-code` or `./scripts/install.sh --platform claude-code` | Always workspace-local (`.claude/`) |
+| Others      | Compatible | Skills use standard Agent Skills format; see [platform guides](docs/platforms/) | — |
 
 
 Marketplace publishing (Cursor, Claude Code, Codex) is planned for future releases.
