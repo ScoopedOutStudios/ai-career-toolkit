@@ -2,6 +2,12 @@
 
 You've run `ai-career-toolkit init` and have a working setup. This guide helps you go deeper.
 
+**Where to go next:**
+
+- **Want prompts right now?** See the [Playbook](playbook.md) for copy-paste prompts and a skill reference.
+- **Want to deepen your setup?** Keep reading below (voice pack, story bank, rubric).
+- **Want a daily operating rhythm?** See [workflow-docs/operating-workflow.md](../workflow-docs/operating-workflow.md).
+
 ## What init set up
 
 `init` created two locations on your machine:
@@ -10,6 +16,8 @@ You've run `ai-career-toolkit init` and have a working setup. This guide helps y
 |----------|----------------|-----------------|
 | **Toolkit root** (e.g. `~/ai-career-toolkit/`) | Skills, agents, templates, scripts, `config/settings.yaml` | Only the repo itself; `config/` is gitignored |
 | **`~/.ai-career-toolkit/`** | Your role thesis, target company lists, interview notes, weekly reviews | No — this is private to you |
+
+If you installed via `pipx`, the toolkit root is auto-resolved — you don't need to manage it. The CLI finds it automatically.
 
 **Why two directories?** The toolkit root contains the shared, version-controlled code. Your personal career data stays outside the repo so you never accidentally commit it to a public fork.
 
@@ -21,7 +29,7 @@ You've run `ai-career-toolkit init` and have a working setup. This guide helps y
 
 The voice pack powers the `in-my-voice` skill. Without it, rewrites use a generic professional tone.
 
-1. Edit the files in `config/voice-pack/` (created by setup with starter content).
+1. Edit the files in `config/voice-pack/` (created by init with starter content).
 2. Replace placeholder content with your actual writing patterns.
 3. Fastest approach: ask your AI agent to "analyze these 5-10 writing samples and generate a voice profile" — paste emails, LinkedIn posts, or docs you've written.
 
@@ -85,6 +93,6 @@ For building and merging target company lists, see [company-list-pipeline.md](..
 | Situation | Command |
 |-----------|---------|
 | Changing your job search targets | `ai-career-toolkit personalize` |
-| Pulled new toolkit updates | `ai-career-toolkit install --platform cursor` (or `claude-code`) |
+| Pulled new toolkit updates | `ai-career-toolkit install --platform cursor [--scope local\|global]` (or `claude-code`) |
 | Something seems broken | `ai-career-toolkit verify` |
 | Starting fresh or filling gaps | `ai-career-toolkit init` (idempotent — skips what's already done) |

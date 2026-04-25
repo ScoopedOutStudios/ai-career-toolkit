@@ -1,12 +1,12 @@
 # Customization Guide
 
-How to personalize ai-career-toolkit for your job search.
+Deeper personalization reference for ai-career-toolkit. If you just finished `init`, start with [Getting Started](GETTING_STARTED.md) first — it covers the essentials. This guide goes further.
 
 ## Step 1: Define Your Role Thesis
 
 The role thesis is the foundation of your search. It defines what you're looking for and what you'll filter on.
 
-1. Edit `~/.ai-career-toolkit/role-thesis.md` (created by `setup.sh` with example content). If you prefer to start from a blank template, copy `templates/role-thesis.md` instead.
+1. Edit `~/.ai-career-toolkit/role-thesis.md` (created by `ai-career-toolkit init` with starter content). If you prefer to start from a blank template, copy `templates/role-thesis.md` instead.
 2. Fill in every section honestly — this is private and never committed to git.
 3. Pay special attention to the Quick Filter Checklist — the `opportunity-evaluator` skill uses it.
 
@@ -14,13 +14,13 @@ The role thesis is the foundation of your search. It defines what you're looking
 
 The voice pack makes `in-my-voice` work. Without it, rewrites will use a generic professional tone.
 
-1. Edit the files in `config/voice-pack/` (created by `setup.sh` with starter content).
+1. Edit the files in `config/voice-pack/` (created by `init` with starter content).
 2. Replace the placeholder content with your actual writing patterns.
 3. The easiest way to build a voice pack: ask your AI agent to analyze 5-10 samples of your writing (emails, LinkedIn posts, docs) and generate a profile.
 
 ## Step 3: Configure Targeting
 
-Edit `config/settings.yaml` to set your company targeting preferences:
+Run `ai-career-toolkit personalize` to update targeting interactively, or edit `config/settings.yaml` directly:
 
 ```yaml
 targeting:

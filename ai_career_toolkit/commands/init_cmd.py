@@ -60,14 +60,15 @@ def _run_install(material_root: Path, platform: str, scope: str = "local") -> in
     return int(proc.returncode)
 
 
-def _is_platform_installed(platform: str, scope: str = "local") -> bool:
+def _is_platform_installed(platform: str, scope: str = "local", workspace: Path | None = None) -> bool:
     marker = "opportunity-evaluator/SKILL.md"
+    base = workspace or Path.cwd()
     if platform == "cursor":
         if scope == "global":
             return (Path.home() / ".cursor" / "skills" / marker).is_file()
-        return (Path.cwd() / ".cursor" / "skills" / marker).is_file()
+        return (base / ".cursor" / "skills" / marker).is_file()
     if platform == "claude-code":
-        return (Path.cwd() / ".claude" / "skills" / marker).is_file()
+        return (base / ".claude" / "skills" / marker).is_file()
     return False
 
 
@@ -166,7 +167,7 @@ def handle_init(args) -> int:
             blank()
             chosen_scope = _pick_scope()
 
-        if _is_platform_installed(chosen_platform, chosen_scope):
+        if _is_platform_installed(chosen_platform, chosen_scope, workspace):
             success(f"Platform install ({chosen_platform}): already up to date")
         else:
             info(f"Installing into {chosen_platform} ({chosen_scope})...")
@@ -174,7 +175,11 @@ def handle_init(args) -> int:
             if rc != 0:
                 warn(f"Platform install returned exit code {rc}.")
                 return rc
-            success(f"Installed to {'~/.cursor/' if chosen_scope == 'global' else '.cursor/'}")
+            if chosen_platform == "cursor":
+                dest = "~/.cursor/" if chosen_scope == "global" else ".cursor/"
+            else:
+                dest = ".claude/"
+            success(f"Installed to {dest}")
     else:
         info("Skipping platform install")
         print(f"        {dim('Run `ai-career-toolkit install --platform <name>` later.')}")
@@ -225,13 +230,15 @@ def _print_first_prompt(workspace: Path, data_home: Path) -> None:
     domains = _read_yaml_list_values(lines, "domains")
 
     print(f"        {bold('Open your AI agent and try:')}")
+    blank()
     if domains and role and level:
         domain_str = " and ".join(domains[:2])
         if len(domains) > 2:
             domain_str += f" (+{len(domains) - 2} more)"
-        print(f'        {dim(">")} "Build me a target company list for {domain_str} {level} {role} roles"')
+        print(f'        {dim("1.")} "Build me a target company list for {domain_str} {level} {role} roles"')
     else:
-        print(f'        {dim(">")} "Build me a target company list for my target domains"')
+        print(f'        {dim("1.")} "Build me a target company list for my target domains"')
+    print(f'        {dim("2.")} "Evaluate this opportunity at [Company] — here\'s the JD: [paste]"')
     blank()
     print(f"        For more prompts, see {bold('docs/playbook.md')}")
 

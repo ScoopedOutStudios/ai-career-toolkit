@@ -4,6 +4,15 @@
 
 **Important:** Claude Code installs skills into the current working directory's `.claude/` folder. Run the install command from the root of the project where you want to use the toolkit.
 
+**Preferred (CLI):**
+
+```bash
+cd /path/to/your-project
+ai-career-toolkit install --platform claude-code
+```
+
+**Or with the script directly:**
+
 ```bash
 cd /path/to/your-project
 /path/to/ai-career-toolkit/scripts/install.sh --platform claude-code
@@ -23,7 +32,7 @@ Claude Code supports Agent Skills via `.claude/skills/` directories and sub-agen
 
 ## Project-Level Rules
 
-Claude Code uses `CLAUDE.md` and `.claude/rules/` for project instructions. **`install.sh --platform claude-code` already copies** `rules/*.mdc` into `.claude/rules/` when you run it from your project root.
+Claude Code uses `CLAUDE.md` and `.claude/rules/` for project instructions. The install command copies `rules/*.mdc` into `.claude/rules/` when you run it from your project root.
 
 To refresh rules manually:
 
@@ -56,5 +65,5 @@ cd /path/to/ai-career-toolkit
 git pull
 
 cd /path/to/your-project
-/path/to/ai-career-toolkit/scripts/install.sh --platform claude-code
+ai-career-toolkit install --platform claude-code
 ```

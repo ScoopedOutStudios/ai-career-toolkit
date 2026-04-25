@@ -30,37 +30,48 @@ def _bash_available() -> bool:
     return shutil.which("bash") is not None
 
 
-def _check_cursor_install() -> Check:
-    skills = Path.home() / ".cursor" / "skills" / "opportunity-evaluator" / "SKILL.md"
-    agents = Path.home() / ".cursor" / "agents" / "research-guru.md"
-    rules = Path.home() / ".cursor" / "rules" / "job-artifact-privacy.mdc"
-    if skills.is_file() and agents.is_file() and rules.is_file():
-        return Check("platform_cursor", True, "Cursor skills, agents, and rules present.", "")
-    missing = []
-    if not skills.is_file():
-        missing.append("~/.cursor/skills/…")
-    if not agents.is_file():
-        missing.append("~/.cursor/agents/…")
-    if not rules.is_file():
-        missing.append("~/.cursor/rules/…")
+def _check_cursor_install(root: Path) -> Check:
+    """Check both local (workspace) and global (~/.cursor) Cursor installs."""
+    local_skills = root / ".cursor" / "skills" / "opportunity-evaluator" / "SKILL.md"
+    global_skills = Path.home() / ".cursor" / "skills" / "opportunity-evaluator" / "SKILL.md"
+
+    if local_skills.is_file():
+        return Check(
+            "platform_cursor",
+            True,
+            f"Cursor install found (local): {root / '.cursor'}",
+            "",
+        )
+    if global_skills.is_file():
+        return Check(
+            "platform_cursor",
+            True,
+            "Cursor install found (global): ~/.cursor",
+            "",
+        )
     return Check(
         "platform_cursor",
         False,
-        "Incomplete: " + ", ".join(missing),
-        "From your toolkit directory run: ./scripts/install.sh --platform cursor",
+        "Cursor skills not found in .cursor/ (local) or ~/.cursor/ (global)",
+        "Run `ai-career-toolkit install --platform cursor` from your toolkit directory.",
     )
 
 
-def _check_claude_cwd() -> Check:
-    root = Path.cwd()
+def _check_claude_install(root: Path) -> Check:
+    """Check workspace-local .claude/ install."""
     skills = root / ".claude" / "skills" / "opportunity-evaluator" / "SKILL.md"
     if skills.is_file():
-        return Check("platform_claude_cwd", True, f"Claude skills found under {root / '.claude'}.", "")
+        return Check(
+            "platform_claude",
+            True,
+            f"Claude install found: {root / '.claude'}",
+            "",
+        )
     return Check(
-        "platform_claude_cwd",
+        "platform_claude",
         False,
-        f"No .claude/skills in current directory ({root}).",
-        "cd your job-search project and run: /path/to/ai-career-toolkit/scripts/install.sh --platform claude-code",
+        f"No .claude/skills found under {root}",
+        "Run `ai-career-toolkit install --platform claude-code` from your project directory.",
     )
 
 
@@ -298,7 +309,7 @@ def run_verify(*, platform: str, workspace: Path | None, output_format: str) -> 
                 "role_thesis",
                 False,
                 f"Missing {role}",
-                "Run init or copy config/role-thesis.md data home (see README).",
+                "Run init or copy templates/role-thesis.md to ~/.ai-career-toolkit/.",
             )
         )
 
@@ -308,9 +319,9 @@ def run_verify(*, platform: str, workspace: Path | None, output_format: str) -> 
     results.append(_check_personalization_thesis(role))
 
     if platform in ("cursor", "both"):
-        results.append(_check_cursor_install())
+        results.append(_check_cursor_install(root))
     if platform in ("claude-code", "both"):
-        results.append(_check_claude_cwd())
+        results.append(_check_claude_install(root))
 
     return _emit(results, output_format, critical=False)
 

@@ -2,17 +2,31 @@
 
 ## Installation
 
-Run the install script from your clone:
+**Preferred (CLI):**
+
+```bash
+ai-career-toolkit install --platform cursor
+```
+
+**Or with the script directly:**
 
 ```bash
 cd /path/to/ai-career-toolkit
 ./scripts/install.sh --platform cursor
 ```
 
-This copies:
-- Skills to `~/.cursor/skills/<skill-name>/SKILL.md`
-- Agents to `~/.cursor/agents/<agent-name>.md`
-- Rules to `~/.cursor/rules/*.mdc` (privacy + writing-quality guardrails — **global** to your Cursor install)
+By default, this installs to `.cursor/` in the **current directory** (workspace-local):
+
+- Skills to `.cursor/skills/<skill-name>/SKILL.md`
+- Agents to `.cursor/agents/<agent-name>.md`
+- Rules to `.cursor/rules/*.mdc`
+
+To install globally (available in all Cursor workspaces), pass `--scope global`:
+
+```bash
+ai-career-toolkit install --platform cursor --scope global
+# Installs to ~/.cursor/skills/, ~/.cursor/agents/, ~/.cursor/rules/
+```
 
 Restart Cursor or reload the window if skills, agents, or rules don't appear immediately.
 
@@ -22,16 +36,16 @@ Cursor natively supports the Agent Skills format. Once installed:
 
 - **Skills** are automatically discovered by Cursor's agent and can be invoked by name or triggered by matching descriptions.
 - **Agents** appear as available sub-agents that can be delegated to.
-- **Rules** — `install.sh` installs them globally under `~/.cursor/rules/`. Use project-level rules only if you want different behavior per repo.
+- **Rules** apply privacy and writing-quality guardrails to agent interactions.
 
-## Project-Level Setup (optional)
+## Local vs Global Install
 
-If you prefer **project-scoped** rules instead of (or in addition to) the global copy:
+| Scope | Location | When to use |
+|-------|----------|-------------|
+| **local** (default) | `.cursor/{skills,agents,rules}/` in current directory | Workspace-specific setup; keeps toolkit scoped to one project |
+| **global** | `~/.cursor/{skills,agents,rules}/` | Available across all Cursor workspaces without per-project installs |
 
-```bash
-mkdir -p .cursor/rules
-cp /path/to/ai-career-toolkit/rules/*.mdc .cursor/rules/
-```
+If you use the **local** scope, run the install command from the directory you open in Cursor.
 
 ## Using Skills
 
@@ -43,10 +57,10 @@ In Cursor's agent mode, you can invoke skills naturally:
 
 ## Updating
 
-When the toolkit is updated, re-run the install script to copy the latest versions:
+When the toolkit is updated, re-run the install to copy the latest versions:
 
 ```bash
 cd /path/to/ai-career-toolkit
 git pull
-./scripts/install.sh --platform cursor
+ai-career-toolkit install --platform cursor
 ```

@@ -1,6 +1,11 @@
-# TEMP — Onboarding, playbook, and roadmap snapshot
+# HISTORICAL — Onboarding, playbook, and roadmap snapshot
 
-**Status:** Temporary planning doc — merge into canonical roadmap or delete after triage.  
+> **This document is historical.** It was used during initial planning and most items have been implemented. For canonical guidance, see:
+> - [docs/playbook.md](../playbook.md) — skill/agent reference and prompts (built)
+> - [docs/GETTING_STARTED.md](../GETTING_STARTED.md) — post-init setup guide (built)
+> - [README.md](../../README.md) — quick start and value narrative (updated)
+
+**Status:** Historical — kept for backlog reference only.  
 **Created:** 2026-04-20  
 **Purpose:** Single place for (1) simplified value-first onboarding, (2) user context requirements, and (3) backlog items from prior Ideas / Roadmap / Build Loop artifacts that are **not** done or need verification.
 
@@ -29,7 +34,7 @@
 
 ---
 
-## 3. Playbook (new deliverable — not built yet)
+## 3. Playbook (DONE — see docs/playbook.md)
 
 Single user-facing doc, e.g. `docs/playbook.md`, containing:
 

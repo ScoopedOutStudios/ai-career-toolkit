@@ -1,6 +1,6 @@
 # Role Thesis — Example
 
-This is an example of a filled-out role thesis. Copy to `config/role-thesis.md` or `~/.ai-career-toolkit/role-thesis.md` and replace with your own details.
+This is an example of a filled-out role thesis. Your personal copy lives at `~/.ai-career-toolkit/role-thesis.md` (created by `ai-career-toolkit init`). Replace the template content with your own details.
 
 ## Target Role
 

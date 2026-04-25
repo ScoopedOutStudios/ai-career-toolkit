@@ -22,7 +22,7 @@ Stop winging your job search. Run it like an engineering system.
 
 1. **Install** the toolkit (pip/pipx or git clone — see [Quick Start](#quick-start) below).
 2. **Run `ai-career-toolkit init`** — one command that sets up files, collects your targeting criteria (role, level, domains), installs into your AI platform, and verifies everything.
-3. **Paste the first prompt** it gives you into your agent — you'll have a scored target company list and your first opportunity evaluation.
+3. **Paste the prompts** it gives you into your agent — build a scored target company list, then evaluate a specific opportunity with a JD.
 
 ## Quick Start
 
@@ -60,7 +60,7 @@ Open your AI agent and talk naturally:
 - "Write a STAR story about my service mesh migration project"
 - "Draft a referral request to send to my contact at Datadog"
 
-The agent discovers and invokes the right skills automatically. For more prompts, see the [Playbook](docs/playbook.md).
+The agent discovers and invokes the right skills automatically. For more prompts, see the [Playbook](docs/playbook.md). For deeper setup (voice pack, story bank, rubric), see [Getting Started](docs/GETTING_STARTED.md).
 
 After you pull updates, re-run `ai-career-toolkit install --platform <name>` so skills, agents, and rules stay in sync. By default, Cursor installs go to `.cursor/` in your current directory (workspace-local); pass `--scope global` to install to `~/.cursor/` instead.
 
