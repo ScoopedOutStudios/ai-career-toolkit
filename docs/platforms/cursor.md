@@ -5,7 +5,13 @@
 **Preferred (CLI):**
 
 ```bash
-ai-career-toolkit install --platform cursor
+ai-career-toolkit init --platform cursor
+```
+
+This runs the full setup. If you've already run `init` and just need to refresh after a `git pull`:
+
+```bash
+ai-career-toolkit init --reinstall --platform cursor
 ```
 
 **Or with the script directly:**
@@ -24,7 +30,7 @@ By default, this installs to `.cursor/` in the **current directory** (workspace-
 To install globally (available in all Cursor workspaces), pass `--scope global`:
 
 ```bash
-ai-career-toolkit install --platform cursor --scope global
+ai-career-toolkit init --reinstall --platform cursor --scope global
 # Installs to ~/.cursor/skills/, ~/.cursor/agents/, ~/.cursor/rules/
 ```
 
@@ -53,7 +59,7 @@ In Cursor's agent mode, you can invoke skills naturally:
 
 - "Evaluate this role at Stripe" — triggers `opportunity-evaluator`
 - "Review my resume" — triggers `hm-review`
-- "Let's practice for my interview" — triggers `mock-interview-loop`
+- "Let's practice for my interview" — triggers `interview-prep`
 
 ## Updating
 
@@ -62,5 +68,5 @@ When the toolkit is updated, re-run the install to copy the latest versions:
 ```bash
 cd /path/to/ai-career-toolkit
 git pull
-ai-career-toolkit install --platform cursor
+ai-career-toolkit init --reinstall --platform cursor
 ```

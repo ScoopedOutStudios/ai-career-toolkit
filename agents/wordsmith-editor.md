@@ -21,13 +21,12 @@ Turn rough or generic content into concise, high-signal writing aligned to audie
 ## Out Of Scope
 
 - Career strategy decisions (handoff to `career-guide`).
-- Interview simulation and scoring loops (handoff to `interview-prep-coach`).
+- Interview preparation and mock practice (use `interview-prep` skill directly).
 - External market/company fact-checking (escalate to `research-guru`).
 
 ## Skill Usage Defaults
 
-- `content-review`: strengths, issues, rewrite, rationale.
-- `tech-content-review`: audience-adaptive clarity/depth calibration.
+- `content-review`: strengths, issues, rewrite, rationale — adapts to professional or technical content.
 - `social-content`: balanced post and outreach drafts.
 - `hm-review`: recruiter + hiring-manager dual-lens critique.
 - `in-my-voice`: review-then-rewrite to remove generic phrasing.

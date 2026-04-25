@@ -48,9 +48,9 @@ See [customization-guide.md](customization-guide.md) for details.
 Use `templates/interview-story-system.md` as the framework:
 
 1. Map your experience to the 8 story templates.
-2. Use the `star-story` skill to draft each one.
+2. Use `interview-prep` in story building mode to draft each one.
 3. Prepare 2-minute and 5-minute versions.
-4. Use `mock-interview-loop` to practice and refine.
+4. Use `interview-prep` in mock practice mode to practice and refine.
 
 ### Self-assessment (~15 min)
 
@@ -84,7 +84,7 @@ Refer to `workflow-docs/operating-workflow.md` for the full methodology:
 - **Daily**: Pick up to 3 priorities, execute, close what's done.
 - **Weekly**: Review pipeline health, close stale opportunities, retier companies.
 - **Per-opportunity**: Run `opportunity-evaluator` before investing significant time.
-- **Per-interview**: Run mock loops, select stories, prepare questions.
+- **Per-interview**: Use `interview-prep` for stories, mock practice, and prep plans.
 
 For building and merging target company lists, see [company-list-pipeline.md](../workflow-docs/company-list-pipeline.md).
 
@@ -92,7 +92,7 @@ For building and merging target company lists, see [company-list-pipeline.md](..
 
 | Situation | Command |
 |-----------|---------|
-| Changing your job search targets | `ai-career-toolkit personalize` |
-| Pulled new toolkit updates | `ai-career-toolkit install --platform cursor [--scope local\|global]` (or `claude-code`) |
+| Changing your job search targets | `ai-career-toolkit init --personalize` |
+| Pulled new toolkit updates | `ai-career-toolkit init --reinstall [--platform cursor --scope local\|global]` |
 | Something seems broken | `ai-career-toolkit verify` |
 | Starting fresh or filling gaps | `ai-career-toolkit init` (idempotent — skips what's already done) |

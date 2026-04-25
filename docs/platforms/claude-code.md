@@ -8,7 +8,14 @@
 
 ```bash
 cd /path/to/your-project
-ai-career-toolkit install --platform claude-code
+ai-career-toolkit init --platform claude-code
+```
+
+If you've already run `init` and just need to refresh after a `git pull`:
+
+```bash
+cd /path/to/your-project
+ai-career-toolkit init --reinstall --platform claude-code
 ```
 
 **Or with the script directly:**
@@ -54,7 +61,7 @@ In Claude Code, invoke skills naturally in conversation:
 
 - "Evaluate this role at Stripe" — triggers `opportunity-evaluator`
 - "Review my resume for this Staff Engineer role" — triggers `hm-review`
-- "Run a mock interview for a systems design panel" — triggers `mock-interview-loop`
+- "Help me prepare for my interview" — triggers `interview-prep`
 
 ## Updating
 
@@ -65,5 +72,5 @@ cd /path/to/ai-career-toolkit
 git pull
 
 cd /path/to/your-project
-ai-career-toolkit install --platform claude-code
+ai-career-toolkit init --reinstall --platform claude-code
 ```

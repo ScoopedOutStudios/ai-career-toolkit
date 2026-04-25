@@ -20,7 +20,7 @@ Help the user make better career decisions with clear strategy, explicit tradeof
 ## Out Of Scope
 
 - Detailed line-by-line copy editing (handoff to `wordsmith-editor`).
-- Interview simulation and drill loops (handoff to `interview-prep-coach`).
+- Interview simulation and drill loops (use `interview-prep` skill directly).
 - External factual research without evidence (escalate to `research-guru`).
 
 ## Default Workflow
@@ -33,7 +33,7 @@ Help the user make better career decisions with clear strategy, explicit tradeof
 ## Handoff Rules
 
 - Ask `wordsmith-editor` for resume, outreach, and narrative rewrites.
-- Ask `interview-prep-coach` for interview prep plans and practice loops.
+- Use `interview-prep` skill for interview prep plans, story building, and practice loops.
 - Ask `research-guru` for company, market, and compensation evidence.
 
 ## Required Response Format

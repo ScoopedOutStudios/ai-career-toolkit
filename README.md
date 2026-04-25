@@ -10,8 +10,7 @@ Stop winging your job search. Run it like an engineering system.
 | Manually researching each company in browser tabs   | `opportunity-evaluator` scores a company + role and gives you a pursue/park/skip recommendation |
 | Spreadsheet of company names with no prioritization | `target-list-generator` builds a scored, tiered target list from your criteria                  |
 | Generic resume sent everywhere                      | `hm-review` reviews your materials through recruiter and hiring manager lenses                  |
-| Inconsistent interview answers                      | `mock-interview-loop` runs scored practice rounds with specific feedback                        |
-| Rough notes that aren't interview-ready             | `star-story` converts experience into tight STAR narratives                                     |
+| Inconsistent interview answers                      | `interview-prep` runs scored practice rounds, builds STAR stories, and creates prep plans       |
 | Outreach messages that sound like templates         | `social-content` + `in-my-voice` produce authentic, personal outreach                           |
 | No idea what "Staff Engineer" means at company X    | `research-guru` digs up eng culture, comp data, hiring signals, and sentiment                   |
 
@@ -44,10 +43,11 @@ ai-career-toolkit init
 ```bash
 git clone https://github.com/ScoopedOutStudios/ai-career-toolkit.git
 cd ai-career-toolkit
-./setup.sh                       # scaffold config + data directories
-pip install -e .                 # optional: enables the CLI for verify/personalize
+pip install -e .                 # install the CLI from the local checkout
 ai-career-toolkit init           # personalize + install + verify in one step
 ```
+
+If you prefer not to install the Python CLI, use `./setup.sh` to scaffold directories and `./scripts/install.sh --platform cursor` to install into your platform manually.
 
 ### After setup
 
@@ -56,28 +56,29 @@ Open your AI agent and talk naturally:
 - "Evaluate this opportunity at Stripe — here's the JD: [paste]"
 - "Build me a target company list for AI infrastructure roles"
 - "Review my resume against this Staff Engineer posting"
-- "Run a mock interview for a systems design panel"
-- "Write a STAR story about my service mesh migration project"
+- "Prep me for a systems design interview at [Company] — mock questions, STAR stories, the works"
 - "Draft a referral request to send to my contact at Datadog"
 
 The agent discovers and invokes the right skills automatically. For more prompts, see the [Playbook](docs/playbook.md). For deeper setup (voice pack, story bank, rubric), see [Getting Started](docs/GETTING_STARTED.md).
 
-After you pull updates, re-run `ai-career-toolkit install --platform <name>` so skills, agents, and rules stay in sync. By default, Cursor installs go to `.cursor/` in your current directory (workspace-local); pass `--scope global` to install to `~/.cursor/` instead.
+After you pull updates, re-run `ai-career-toolkit init --reinstall` so skills, agents, and rules stay in sync. By default, Cursor installs go to `.cursor/` in your current directory (workspace-local); pass `--scope global` to install to `~/.cursor/` instead.
 
 ### CLI commands
+
+The CLI is setup infrastructure — run once, then do everything through your AI agent.
 
 | Command | When to use | What it does |
 |---------|-------------|--------------|
 | `init` | First time, or to fill gaps | Full flow: scaffold + personalize + install + verify + first prompt |
-| `personalize` | Changing targets mid-search | Interactive menus for role, level, domains, geo, exclusions; seeds role thesis |
-| `install --platform X [--scope local\|global]` | After `git pull` | Re-copies skills/agents/rules to your platform (default: workspace-local) |
-| `verify` | Anytime, diagnostics | Checks layout, config, personalization, and platform install |
+| `init --reinstall` | After `git pull` | Re-copies skills/agents/rules to your platform |
+| `init --personalize` | Changing targets mid-search | Re-run interactive menus for role, level, domains, geo, exclusions |
+| `verify` | Diagnostics | Checks layout, config, personalization, and platform install |
 
 ### If something goes wrong
 
-- **"Could not auto-detect platform"** — pass `--platform cursor` or `--platform claude-code` to `init` or `install`.
-- **Claude Code: skills missing** — you probably ran `install.sh` from the wrong directory; `cd` to the project that should own `.claude/` and re-run with the absolute path to `scripts/install.sh`.
-- **Skills don't update** — restart Cursor / reload the window, or start a new Claude Code session.
+- **"Could not auto-detect platform"** — pass `--platform cursor` or `--platform claude-code` to `init`.
+- **Claude Code: skills missing** — you probably ran install from the wrong directory; `cd` to the project that should own `.claude/` and re-run `ai-career-toolkit init --reinstall --platform claude-code`.
+- **Skills don't update after `init --reinstall`** — restart Cursor / reload the window, or start a new Claude Code session.
 
 ## Prerequisites
 
@@ -88,7 +89,7 @@ After you pull updates, re-run `ai-career-toolkit install --platform <name>` so 
 
 ## What's Inside
 
-### Skills (9)
+### Skills (7)
 
 AI agent skills that follow the [Agent Skills](https://agentskills.io) format:
 
@@ -98,26 +99,32 @@ AI agent skills that follow the [Agent Skills](https://agentskills.io) format:
 | **opportunity-evaluator** | Evaluate a company + role with structured scoring and pursue/park/skip recommendation |
 | **target-list-generator** | Build a scored, tiered list of target companies from your criteria                    |
 | **hm-review**             | Dual-lens resume/application review (recruiter + hiring manager perspective)          |
-| **mock-interview-loop**   | Iterative mock interviews with 1-5 scoring and feedback                               |
-| **star-story**            | Build and refine STAR stories for behavioral interviews                               |
+| **interview-prep**        | STAR story building, mock interviews with scoring, prep plans, and debrief            |
 | **social-content**        | LinkedIn posts, recruiter outreach, referral requests, follow-ups                     |
-| **content-review**        | Structured editorial review with rewrite and rationale                                |
-| **tech-content-review**   | Technical writing review with audience-adaptive calibration                           |
+| **content-review**        | Structured editorial review with audience-adaptive depth (professional and technical) |
 | **in-my-voice**           | Rewrite content to match your personal voice using a voice pack                       |
 
 
-### Agents (4)
+### Agents (3)
 
 Agent definitions that orchestrate skills and handle handoffs:
 
 
-| Agent                    | Role                                                      |
-| ------------------------ | --------------------------------------------------------- |
-| **career-guide**         | Career strategy, role positioning, offer tradeoffs        |
-| **interview-prep-coach** | Interview readiness, story building, mock practice        |
-| **research-guru**        | Company intel, compensation benchmarking, market research |
-| **wordsmith-editor**     | Editorial specialist for all job-search writing           |
+| Agent                | Role                                                      |
+| -------------------- | --------------------------------------------------------- |
+| **career-guide**     | Career strategy, role positioning, offer tradeoffs        |
+| **research-guru**    | Company intel, compensation benchmarking, market research |
+| **wordsmith-editor** | Editorial specialist for all job-search writing           |
 
+
+### Rules (2)
+
+Always-on guardrails that apply automatically to agent interactions:
+
+| Rule | What it enforces |
+| ---- | ---------------- |
+| **job-artifact-privacy** | Keeps PII, comp details, and recruiter names out of git-tracked files; defaults to private `~/.ai-career-toolkit/` |
+| **job-writing-quality** | Sets quality bar for toolkit content: structure, evidence over generics, concision |
 
 ### Templates (5)
 
@@ -166,7 +173,7 @@ Design goals:
 
 ```
 ai-career-toolkit/
-├── ai_career_toolkit/   # Python CLI (init / verify / install / personalize)
+├── ai_career_toolkit/   # Python CLI (init / verify)
 ├── pyproject.toml       # Package metadata (hatchling)
 ├── skills/              # AI agent skills (SKILL.md format)
 ├── agents/              # Agent definitions

@@ -21,7 +21,10 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     sub = parser.add_subparsers(dest="command", required=True)
 
-    p_init = sub.add_parser("init", help="Materialize toolkit files (if needed), create config and data directories")
+    p_init = sub.add_parser(
+        "init",
+        help="Set up the toolkit: scaffold files, personalize, install into AI platform, and verify",
+    )
     p_init.add_argument(
         "-y",
         "--yes",
@@ -46,17 +49,33 @@ def _build_parser() -> argparse.ArgumentParser:
         default=None,
         help="Target platform to install into (default: auto-detect or ask interactively)",
     )
+    p_init.add_argument(
+        "--scope",
+        choices=("local", "global"),
+        default="local",
+        help="Install scope for Cursor: local (workspace .cursor/) or global (~/.cursor/). Default: local",
+    )
+    p_init.add_argument(
+        "--reinstall",
+        action="store_true",
+        help="Re-install platform files only (skip scaffold and personalize). Use after git pull.",
+    )
+    p_init.add_argument(
+        "--personalize",
+        action="store_true",
+        help="Re-run personalization only (skip scaffold and install). Use to change targeting mid-search.",
+    )
 
     p_verify = sub.add_parser(
         "verify",
-        help="Check toolkit layout, config, data home, and optional install --platform targets",
+        help="Check toolkit layout, config, data home, and platform installs",
     )
     p_verify.add_argument(
         "--platform",
         choices=("none", "cursor", "claude-code", "both"),
         default="none",
         metavar="TARGET",
-        help="Also verify install destinations for this target (same as install --platform; default: none)",
+        help="Also verify install destinations for this platform (default: none)",
     )
     p_verify.add_argument(
         "--workspace",
@@ -69,45 +88,6 @@ def _build_parser() -> argparse.ArgumentParser:
         choices=("text", "json"),
         default="text",
         help="Output format",
-    )
-
-    p_inst = sub.add_parser(
-        "install",
-        help="Run scripts/install.sh for Cursor or Claude Code (bash required)",
-    )
-    p_inst.add_argument(
-        "--platform",
-        choices=("cursor", "claude-code"),
-        required=True,
-    )
-    p_inst.add_argument(
-        "--scope",
-        choices=("local", "global"),
-        default="local",
-        help="Install scope: local (workspace .cursor/) or global (~/.cursor/). Default: local",
-    )
-    p_inst.add_argument(
-        "--workspace",
-        type=Path,
-        default=None,
-        help="Toolkit root containing scripts/install.sh",
-    )
-
-    p_pers = sub.add_parser(
-        "personalize",
-        help="Set targeting criteria (role, level, domains) and seed role-thesis",
-    )
-    p_pers.add_argument(
-        "--workspace",
-        type=Path,
-        default=None,
-        help="Toolkit root containing config/settings.yaml",
-    )
-    p_pers.add_argument(
-        "--data-home",
-        type=Path,
-        default=None,
-        help="Personal data directory containing role-thesis.md",
     )
 
     return parser
@@ -129,17 +109,6 @@ def main() -> int:
                 platform=args.platform,
                 workspace=args.workspace,
                 output_format=args.format,
-            )
-        if args.command == "install":
-            from ai_career_toolkit.commands.init_cmd import handle_install
-
-            return handle_install(args)
-        if args.command == "personalize":
-            from ai_career_toolkit.commands.personalize_cmd import handle_personalize
-
-            return handle_personalize(
-                workspace=Path(args.workspace).expanduser().resolve() if args.workspace else None,
-                data_home=Path(args.data_home).expanduser().resolve() if args.data_home else None,
             )
     except KeyboardInterrupt:
         return 130

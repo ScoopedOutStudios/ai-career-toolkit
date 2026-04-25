@@ -20,7 +20,7 @@ The voice pack makes `in-my-voice` work. Without it, rewrites will use a generic
 
 ## Step 3: Configure Targeting
 
-Run `ai-career-toolkit personalize` to update targeting interactively, or edit `config/settings.yaml` directly:
+Run `ai-career-toolkit init --personalize` to update targeting interactively, or edit `config/settings.yaml` directly:
 
 ```yaml
 targeting:
@@ -46,7 +46,7 @@ Use `templates/role-expectation-rubric.md` to assess your current level:
 
 1. Score each of the 8 dimensions (1-5) with specific evidence
 2. Identify your top 3 gaps
-3. Build STAR stories that address those gaps using the `star-story` skill
+3. Build STAR stories that address those gaps using `interview-prep` in story building mode
 4. Re-score monthly as you refine your stories and get interview feedback
 
 ## Step 5: Build Your Story Bank
@@ -54,9 +54,9 @@ Use `templates/role-expectation-rubric.md` to assess your current level:
 Use `templates/interview-story-system.md` as your framework:
 
 1. Map your experience to the 8 story templates
-2. Use the `star-story` skill to draft each one
+2. Use `interview-prep` in story building mode to draft each one
 3. Prepare 2-minute and 5-minute versions
-4. Use `mock-interview-loop` to practice and refine
+4. Use `interview-prep` in mock practice mode to practice and refine
 
 ## Ongoing Workflow
 

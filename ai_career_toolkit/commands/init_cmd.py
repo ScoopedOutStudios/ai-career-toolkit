@@ -13,6 +13,7 @@ from ai_career_toolkit.paths import (
     default_data_home,
     editable_repo_root,
     is_toolkit_root,
+    resolve_toolkit_root,
 )
 from ai_career_toolkit.scaffold import scaffold
 from ai_career_toolkit.ui import (
@@ -41,7 +42,7 @@ def _source_root() -> Path:
 
 
 # ---------------------------------------------------------------------------
-# Step 3: platform install
+# Platform install helpers
 # ---------------------------------------------------------------------------
 
 
@@ -97,31 +98,55 @@ def _pick_scope() -> str:
     return "global" if "Global" in choice else "local"
 
 
+def _resolve_workspace(args) -> Path:
+    """Resolve the toolkit workspace directory."""
+    if args.workspace:
+        return Path(str(args.workspace)).expanduser().resolve()
+    er = editable_repo_root()
+    if er:
+        return er
+    try:
+        return resolve_toolkit_root(env_only=False)
+    except FileNotFoundError:
+        return (Path.home() / "ai-career-toolkit").resolve()
+
+
 # ---------------------------------------------------------------------------
 # handle_init — the unified golden-path command
 # ---------------------------------------------------------------------------
 
-TOTAL_STEPS = 5
-
 
 def handle_init(args) -> int:
+    reinstall: bool = getattr(args, "reinstall", False)
+    personalize_only: bool = getattr(args, "personalize", False)
+
+    if reinstall and personalize_only:
+        print(
+            "Error: --reinstall and --personalize are mutually exclusive.",
+            file=sys.stderr,
+        )
+        return 1
+
+    if reinstall:
+        return _handle_reinstall(args)
+    if personalize_only:
+        return _handle_personalize_only(args)
+    return _handle_full_init(args)
+
+
+def _handle_full_init(args) -> int:
+    """Full init: scaffold -> personalize -> install -> verify -> ready."""
     yes: bool = args.yes
     data_home = Path(args.data_home).expanduser().resolve() if args.data_home else default_data_home()
     platform_arg: str | None = getattr(args, "platform", None)
 
+    total_steps = 5
     header("ai-career-toolkit init")
 
-    # ------------------------------------------------------------------
     # Step 1: Scaffold
-    # ------------------------------------------------------------------
-    step(1, TOTAL_STEPS, "Scaffold")
+    step(1, total_steps, "Scaffold")
 
-    if args.workspace:
-        workspace = Path(str(args.workspace)).expanduser().resolve()
-    else:
-        er = editable_repo_root()
-        workspace = er if er else (Path.home() / "ai-career-toolkit").resolve()
-
+    workspace = _resolve_workspace(args)
     source = _source_root()
 
     if not is_toolkit_root(workspace):
@@ -137,10 +162,8 @@ def handle_init(args) -> int:
     detail("Personal data", str(data_home))
     blank()
 
-    # ------------------------------------------------------------------
     # Step 2: Personalize
-    # ------------------------------------------------------------------
-    step(2, TOTAL_STEPS, "Personalize")
+    step(2, total_steps, "Personalize")
 
     from ai_career_toolkit.commands.personalize_cmd import handle_personalize
 
@@ -149,46 +172,14 @@ def handle_init(args) -> int:
         return rc
     blank()
 
-    # ------------------------------------------------------------------
     # Step 3: Platform Install
-    # ------------------------------------------------------------------
-    step(3, TOTAL_STEPS, "Platform Install")
+    step(3, total_steps, "Platform Install")
 
-    if platform_arg:
-        chosen_platform = platform_arg
-    elif yes:
-        chosen_platform = "cursor" if (Path.home() / ".cursor").is_dir() else None
-    else:
-        chosen_platform = _pick_platform()
-
-    chosen_scope = "local"
-    if chosen_platform:
-        if chosen_platform == "cursor" and not yes:
-            blank()
-            chosen_scope = _pick_scope()
-
-        if _is_platform_installed(chosen_platform, chosen_scope, workspace):
-            success(f"Platform install ({chosen_platform}): already up to date")
-        else:
-            info(f"Installing into {chosen_platform} ({chosen_scope})...")
-            rc = _run_install(workspace, chosen_platform, chosen_scope)
-            if rc != 0:
-                warn(f"Platform install returned exit code {rc}.")
-                return rc
-            if chosen_platform == "cursor":
-                dest = "~/.cursor/" if chosen_scope == "global" else ".cursor/"
-            else:
-                dest = ".claude/"
-            success(f"Installed to {dest}")
-    else:
-        info("Skipping platform install")
-        print(f"        {dim('Run `ai-career-toolkit install --platform <name>` later.')}")
+    chosen_platform, chosen_scope = _do_platform_install(workspace, platform_arg, yes, args)
     blank()
 
-    # ------------------------------------------------------------------
     # Step 4: Verify
-    # ------------------------------------------------------------------
-    step(4, TOTAL_STEPS, "Verify")
+    step(4, total_steps, "Verify")
 
     from ai_career_toolkit.commands.verify_cmd import run_verify
 
@@ -199,10 +190,8 @@ def handle_init(args) -> int:
     )
     blank()
 
-    # ------------------------------------------------------------------
     # Step 5: Ready!
-    # ------------------------------------------------------------------
-    step(5, TOTAL_STEPS, "Ready!")
+    step(5, total_steps, "Ready!")
 
     _print_first_prompt(workspace, data_home)
 
@@ -214,6 +203,114 @@ def handle_init(args) -> int:
 
     blank()
     return 0
+
+
+def _handle_reinstall(args) -> int:
+    """Reinstall only: resolve workspace -> install -> verify."""
+    platform_arg: str | None = getattr(args, "platform", None)
+    yes: bool = args.yes
+
+    header("ai-career-toolkit init --reinstall")
+
+    workspace = _resolve_workspace(args)
+    if not is_toolkit_root(workspace):
+        print(
+            f"Toolkit files not found at {workspace}. Run `ai-career-toolkit init` first.",
+            file=sys.stderr,
+        )
+        return 1
+
+    step(1, 2, "Platform Install")
+    chosen_platform, chosen_scope = _do_platform_install(workspace, platform_arg, yes, args)
+    blank()
+
+    step(2, 2, "Verify")
+    from ai_career_toolkit.commands.verify_cmd import run_verify
+
+    run_verify(
+        platform=chosen_platform or "none",
+        workspace=workspace,
+        output_format="text",
+    )
+    blank()
+    return 0
+
+
+def _handle_personalize_only(args) -> int:
+    """Personalize only: resolve workspace -> personalize -> verify."""
+    yes: bool = args.yes
+    data_home = Path(args.data_home).expanduser().resolve() if args.data_home else default_data_home()
+
+    header("ai-career-toolkit init --personalize")
+
+    workspace = _resolve_workspace(args)
+    if not is_toolkit_root(workspace):
+        print(
+            f"Toolkit files not found at {workspace}. Run `ai-career-toolkit init` first.",
+            file=sys.stderr,
+        )
+        return 1
+
+    step(1, 2, "Personalize")
+
+    from ai_career_toolkit.commands.personalize_cmd import handle_personalize
+
+    rc = handle_personalize(workspace=workspace, data_home=data_home, yes=yes, show_header=False)
+    if rc != 0:
+        return rc
+    blank()
+
+    step(2, 2, "Verify")
+    from ai_career_toolkit.commands.verify_cmd import run_verify
+
+    run_verify(
+        platform="none",
+        workspace=workspace,
+        output_format="text",
+    )
+    blank()
+    return 0
+
+
+# ---------------------------------------------------------------------------
+# Shared helpers
+# ---------------------------------------------------------------------------
+
+
+def _do_platform_install(workspace: Path, platform_arg: str | None, yes: bool, args) -> tuple[str | None, str]:
+    """Run the platform install step. Returns (chosen_platform, chosen_scope)."""
+    if platform_arg:
+        chosen_platform = platform_arg
+    elif yes:
+        chosen_platform = "cursor" if (Path.home() / ".cursor").is_dir() else None
+    else:
+        chosen_platform = _pick_platform()
+
+    chosen_scope = getattr(args, "scope", "local")
+    if chosen_platform:
+        if chosen_platform == "cursor" and not yes and chosen_scope == "local":
+            if not getattr(args, "reinstall", False):
+                blank()
+                chosen_scope = _pick_scope()
+
+        if _is_platform_installed(chosen_platform, chosen_scope, workspace):
+            success(f"Platform install ({chosen_platform}): already up to date")
+        else:
+            info(f"Installing into {chosen_platform} ({chosen_scope})...")
+            rc = _run_install(workspace, chosen_platform, chosen_scope)
+            if rc != 0:
+                warn(f"Platform install returned exit code {rc}.")
+            else:
+                if chosen_platform == "cursor":
+                    dest = "~/.cursor/" if chosen_scope == "global" else ".cursor/"
+                else:
+                    dest = ".claude/"
+                success(f"Installed to {dest}")
+    else:
+        info("Skipping platform install")
+        print(f"        {dim('Run `ai-career-toolkit init --reinstall --platform <name>` later.')}")
+
+    return chosen_platform, chosen_scope
 
 
 def _print_first_prompt(workspace: Path, data_home: Path) -> None:
@@ -241,32 +338,3 @@ def _print_first_prompt(workspace: Path, data_home: Path) -> None:
     print(f'        {dim("2.")} "Evaluate this opportunity at [Company] — here\'s the JD: [paste]"')
     blank()
     print(f"        For more prompts, see {bold('docs/playbook.md')}")
-
-
-# ---------------------------------------------------------------------------
-# handle_install — standalone re-install (after git pull, etc.)
-# ---------------------------------------------------------------------------
-
-
-def handle_install(args) -> int:
-    workspace = Path(args.workspace).expanduser().resolve() if args.workspace else None
-    if workspace is None:
-        try:
-            from ai_career_toolkit.paths import resolve_toolkit_root
-
-            workspace = resolve_toolkit_root()
-        except FileNotFoundError as e:
-            print(f"Error: {e}", file=sys.stderr)
-            print(
-                "Pass --workspace /path/to/toolkit or run init first.",
-                file=sys.stderr,
-            )
-            return 1
-    if not is_toolkit_root(workspace):
-        print(
-            f"Toolkit files not found at {workspace}. Run `ai-career-toolkit init` first.",
-            file=sys.stderr,
-        )
-        return 1
-    scope = getattr(args, "scope", "local")
-    return _run_install(workspace, args.platform, scope)
