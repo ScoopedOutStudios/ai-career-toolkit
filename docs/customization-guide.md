@@ -2,6 +2,10 @@
 
 Deeper personalization reference for ai-career-toolkit. If you just finished `init`, start with [Getting Started](GETTING_STARTED.md) first — it covers the essentials. This guide goes further.
 
+## Bootstrap from resume (optional shortcut)
+
+If you already have a résumé in Markdown, PDF, or hosted URL, ask your AI agent to run the **`resume-bootstrap`** skill: it produces a **first-pass** `config/settings.yaml` targeting block and a filled `~/.ai-career-toolkit/role-thesis.md` from `templates/role-thesis.md`. Always review inferred level, compensation, and exclusions yourself — then run `ai-career-toolkit verify`.
+
 ## Step 1: Define Your Role Thesis
 
 The role thesis is the foundation of your search. It defines what you're looking for and what you'll filter on.

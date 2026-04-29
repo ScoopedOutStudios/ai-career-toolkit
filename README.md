@@ -89,13 +89,14 @@ The CLI is setup infrastructure — run once, then do everything through your AI
 
 ## What's Inside
 
-### Skills (7)
+### Skills (8)
 
 AI agent skills that follow the [Agent Skills](https://agentskills.io) format:
 
 
 | Skill                     | What it does                                                                          |
 | ------------------------- | ------------------------------------------------------------------------------------- |
+| **resume-bootstrap**      | First-pass `settings.yaml` + `role-thesis.md` from resume (Markdown, PDF, or URL)      |
 | **opportunity-evaluator** | Evaluate a company + role with structured scoring and pursue/park/skip recommendation |
 | **target-list-generator** | Build a scored, tiered list of target companies from your criteria                    |
 | **hm-review**             | Dual-lens resume/application review (recruiter + hiring manager perspective)          |
