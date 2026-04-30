@@ -9,7 +9,7 @@ description = "CLI for guided setup and verification of the ai-career-toolkit (s
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"
-authors = [{ name = "ScoopedOutStudios" }]
+authors = [{ name = "Rohit Nandwate" }]
 keywords = ["career", "job-search", "cursor", "claude", "agents"]
 
 [project.optional-dependencies]
@@ -17,7 +17,7 @@ test = ["pytest>=7"]
 lint = ["ruff>=0.4"]
 
 [project.urls]
-Homepage = "https://github.com/ScoopedOutStudios/ai-career-toolkit"
+Homepage = "https://github.com/rohitnandwate/ai-career-toolkit"
 
 [project.scripts]
 ai-career-toolkit = "ai_career_toolkit.cli:main"

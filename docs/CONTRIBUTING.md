@@ -30,7 +30,7 @@ Thanks for your interest in contributing. This toolkit is opinionated and mainta
 ## CLI development
 
 ```bash
-git clone https://github.com/ScoopedOutStudios/ai-career-toolkit.git
+git clone https://github.com/rohitnandwate/ai-career-toolkit.git
 cd ai-career-toolkit
 python3 -m venv .venv && source .venv/bin/activate
 pip install -e .

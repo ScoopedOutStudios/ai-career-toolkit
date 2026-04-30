@@ -97,7 +97,7 @@ Sourced from [README.md](../../README.md) and public issue links. **Verify in Gi
 
 | Item                                      | Type             | Notes                                                                                                                                                |
 | ----------------------------------------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Non-tech roles expansion**              | GitHub issue     | [Issue #1](https://github.com/ScoopedOutStudios/ai-career-toolkit/issues/1) — sales, marketing, product, design, ops; v1 explicitly **out of scope** |
+| **Non-tech roles expansion**              | GitHub issue     | [Issue #1](https://github.com/rohitnandwate/ai-career-toolkit/issues/1) — sales, marketing, product, design, ops; v1 explicitly **out of scope** |
 | **Marketplace publishing**                | Roadmap / README | “Planned for future releases” (Cursor, Claude Code, Codex) — **not started**                                                                         |
 | **Manager / EM-first tracks**             | Scope            | README: not first-class; IC-calibrated — **content gap** if EM audience grows                                                                        |
 | **Hosted CRM / ATS / scoring automation** | Non-goal         | Launch plan: no `score_companies.py`-style pipeline in v1 — **deferred** unless demand                                                               |

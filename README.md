@@ -30,8 +30,8 @@ Pick **one** path:
 ### Path A — pip / pipx + CLI (recommended)
 
 ```bash
-pipx install git+https://github.com/ScoopedOutStudios/ai-career-toolkit.git
-# or: python3 -m pip install --user git+https://github.com/ScoopedOutStudios/ai-career-toolkit.git
+pipx install git+https://github.com/rohitnandwate/ai-career-toolkit.git
+# or: python3 -m pip install --user git+https://github.com/rohitnandwate/ai-career-toolkit.git
 
 ai-career-toolkit init
 ```
@@ -41,7 +41,7 @@ ai-career-toolkit init
 ### Path B — git clone + bash
 
 ```bash
-git clone https://github.com/ScoopedOutStudios/ai-career-toolkit.git
+git clone https://github.com/rohitnandwate/ai-career-toolkit.git
 cd ai-career-toolkit
 pip install -e .                 # install the CLI from the local checkout
 ai-career-toolkit init           # personalize + install + verify in one step
@@ -199,7 +199,7 @@ ai-career-toolkit/
 
 **Explicitly out of scope for v1**
 
-- Non-technical job families (sales, marketing, non-technical PM, etc.) — discussion in [#1](https://github.com/ScoopedOutStudios/ai-career-toolkit/issues/1).
+- Non-technical job families (sales, marketing, non-technical PM, etc.) — discussion in [#1](https://github.com/rohitnandwate/ai-career-toolkit/issues/1).
 - Manager-only career tracks as a first-class path (some content may still be useful; the kit is IC-calibrated).
 - Marketplace packaging (may come later).
 
